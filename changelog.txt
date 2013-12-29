@@ -1,0 +1,6 @@
+[B]Version v2.0.1[/B]
+- Small fixes to load TV Shows under Life OK.
+
+[B]Version v2.0.0[/B]
+- TV on DESI ZONE with NEW LOOK.
+- Optimized for fastest response.
