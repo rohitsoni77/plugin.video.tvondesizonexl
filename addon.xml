@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.tvondesizonexl" name="TV on DESI ZONE" version="2.0.1"
-	provider-name="AJ">
+	provider-name="ajdeveloped">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0" />
 		<import addon="script.module.simplejson" />
@@ -11,8 +11,8 @@
 	<provides>video</provides>
 	</extension>
 	<extension point="xbmc.addon.metadata">
-		<summary>XOZE is a service that executes the request for an addon and decrease the response time.</summary>
-		<description>XOZE is a service that executes the request for an addon and decrease the response time</description>
+		<summary>Watch Indian TV videos as seen on desirulez.net</summary>
+		<description>Watch Indian TV videos as seen on desirulez.net</description>
 		<disclaimer>This addon makes no warranties, expressed or implied, and
 			hereby disclaims and negates all other warranties, including without
 			limitation, implied warranties or conditions of merchantability,
