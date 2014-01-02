@@ -20,7 +20,7 @@ along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from xoze.context import AddonContext, SnapVideo
-from xoze.snapvideo import Dailymotion, Playwire, Putlocker, YouTube
+from xoze.snapvideo import Dailymotion, Playwire, Putlocker, YouTube, Tune_pk
 from xoze.utils import file, http, jsonfile
 from xoze.utils.cache import CacheManager
 from xoze.utils.http import HttpClient
@@ -332,6 +332,7 @@ def load_tv_show_episodes(req_attrib, modelMap):
 
 def __retrieveTVShowEpisodes__(threads, tv_show_name, channel_type, channel_name):
     tv_show_episode_items = []
+    logging.getLogger().debug(threads)
     if threads is None:
         return []
     aTags = threads.findAll('a', {'class':re.compile(r'\btitle\b')})
@@ -616,7 +617,7 @@ def __prepareVideoLink__(video_link):
     video_link['videoSourceImg'] = video_hosting_info.get_icon()
     video_link['videoSourceName'] = video_hosting_info.get_name()
 
-PREFERRED_DIRECT_PLAY_ORDER = [Dailymotion.VIDEO_HOSTING_NAME, Putlocker.VIDEO_HOSTING_NAME, YouTube.VIDEO_HOSTING_NAME]
+PREFERRED_DIRECT_PLAY_ORDER = [Dailymotion.VIDEO_HOSTING_NAME, Putlocker.VIDEO_HOSTING_NAME, Tune_pk.VIDEO_HOSTING_NAME, YouTube.VIDEO_HOSTING_NAME]
 
 def __findPlayNowStream__(new_items):
 #     if AddonContext().get_addon().getSetting('autoplayback') == 'false':
@@ -625,6 +626,7 @@ def __findPlayNowStream__(new_items):
     selectedIndex = None
     selectedSource = None
     backupSource = None
+    backupSourceName = None
     for item in new_items:
         if item.getProperty('isContinuousPlayItem') == 'true':
             source_name = item.getProperty('videoSourceName')
@@ -639,9 +641,14 @@ def __findPlayNowStream__(new_items):
                     selectedIndex = preference
             except ValueError:
                 logging.getLogger().debug("Exception for source : %s" % source_name)
-                if source_name == Playwire.VIDEO_HOSTING_NAME and backupSource is None:
+                if source_name == Playwire.VIDEO_HOSTING_NAME and (backupSource is None or backupSourceName != Playwire.VIDEO_HOSTING_NAME):
                     logging.getLogger().debug("Added to backup plan: %s" % source_name)
                     backupSource = item
+                    backupSourceName = source_name
+                elif backupSource is None:
+                    logging.getLogger().debug("Added to backup plan when Playwire not found: %s" % source_name)
+                    backupSource = item
+                    backupSourceName = source_name
                 continue
     sources = {}
     sources['selected'] = selectedSource

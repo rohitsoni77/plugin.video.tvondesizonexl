@@ -1,3 +1,7 @@
+[B]Version v2.0.2[/B]
+- Fixed Pakistani tv show video stream link resolver.
+- Added new icon for new look.
+
 [B]Version v2.0.1[/B]
 - Small fixes to load TV Shows under Life OK.
 

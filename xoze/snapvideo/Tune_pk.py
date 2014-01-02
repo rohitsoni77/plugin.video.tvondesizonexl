@@ -10,6 +10,9 @@ from xoze.utils import http
 import logging
 import re
 
+
+VIDEO_HOSTING_NAME = 'Tune.pk'
+
 def getVideoHost():
     video_host = VideoHost()
     video_host.set_icon('http://tune.pk/styles/tunev3/images/logo.png')
