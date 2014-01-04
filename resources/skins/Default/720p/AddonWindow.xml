@@ -9,24 +9,117 @@
 	<controls>
 		<!-- tv channels group -->
 		<control type="group" id="100">
-			<control type="label" id="101">
-				<description>TV CHANNELS</description>
+			<control type="label" id="103">
+				<description>FAVORITES</description>
 				<posx>20</posx>
 				<!-- <posy>305</posy> -->
 				<posy>20</posy>
 				<width>220</width>
 				<height>13</height>
 				<font>font13_title</font>
+				<label>FAVORITES</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>0xFF4A4A4A</textcolor>
+			</control>
+			
+			<control type="label" id="104">
+				<description>FAVORITES HELP</description>
+				<posx>20</posx>
+				<!-- <posy>305</posy> -->
+				<posy>50</posy>
+				<width>1200</width>
+				<height>180</height>
+				<font>font10</font>
+				<label>TO ADD NEW TV SHOW FAVORITE, FIRST NAVIGATE TO CHANNEL TV SHOWS AND SELECT TV SHOW. THEREAFTER LONG PRESS MENU BUTTON ON APPLE TV OR RIGHT CLICK ON HTPC.</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>0xFF4A4A4A</textcolor>
+			</control>
+			
+			<control type="fixedlist" id="105">
+				<posx>20</posx>
+				<posy>50</posy>
+				<width>1260</width>
+				<height>190</height>
+				<onup>102</onup>
+				<onleft>105</onleft>
+				<onright>105</onright>
+				<ondown>102</ondown>
+				<viewtype>list</viewtype>
+				<focusposition>2</focusposition>
+				<orientation>horizontal</orientation>
+				<scrolltime tween="sine" easing="out">200</scrolltime>
+				<itemlayout height="180" width="240">
+					<control type="image" id="1051">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>220</width>
+						<height>160</height>
+						<aspectratio>stretch</aspectratio>
+						<bordertexture border="5">button-nofocus.png</bordertexture>
+						<bordersize>3</bordersize>
+						<texture colordiffuse="0xFFD1EEFC">$INFO[ListItem.Icon]</texture>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>160</posy>
+						<width>220</width>
+						<height>160</height>
+						<aspectratio aligny="top">keep</aspectratio>
+						<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
+					</control>
+				</itemlayout>
+				<focusedlayout height="190" width="240">
+					<control type="image" id="9012">
+						<posx>-10</posx>
+						<posy>-10</posy>
+						<width>240</width>
+						<height>180</height>
+						<aspectratio>stretch</aspectratio>
+						<info>ListItem.Thumb</info>
+						<bordertexture border="5">button-focus3.png</bordertexture>
+						<bordersize>3</bordersize>
+					</control>
+					<control type="image">
+						<posx>-10</posx>
+						<posy>170</posy>
+						<width>240</width>
+						<height>180</height>
+						<aspectratio aligny="top">keep</aspectratio>
+						<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="button" id="106">
+			      <description>remove this favorite</description>
+			      <posx>510</posx>
+			      <posy>230</posy>
+			      <width>200</width>
+			      <height>40</height>
+			      <label>REMOVE FAVORITE</label>
+			      <font>font13</font>
+			      <align>center</align>
+			</control>
+			
+			<control type="label" id="101">
+				<description>TV CHANNELS</description>
+				<posx>20</posx>
+				<!-- <posy>305</posy> -->
+				<posy>260</posy>
+				<width>220</width>
+				<height>13</height>
+				<font>font13_title</font>
 				<label>TV CHANNELS</label>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>0xFF1F1F21</textcolor>
+				<textcolor>0xFF4A4A4A</textcolor>
 			</control>
 			<control type="image">
 				<description>horizontal line</description>
 				<posx>5</posx>
 				<!-- <posy>335</posy> -->
-				<posy>50</posy>
+				<posy>290</posy>
 				<width>1270</width>
 				<height>1</height>
 				<texture>title-line.png</texture>
@@ -34,14 +127,14 @@
 			<control type="panel" id="102">
 				<posx>15</posx>
 				<!-- <posy>350</posy> -->
-				<posy>65</posy>
+				<posy>305</posy>
 				<width>1260</width>
 				<!-- <height>350</height> -->
-				<height>640</height>
-				<onup>102</onup>
-				<onleft>60</onleft>
-				<onright>60</onright>
-				<ondown>102</ondown>
+				<height>400</height>
+				<onup>105</onup>
+				<onleft>102</onleft>
+				<onright>102</onright>
+				<ondown>105</ondown>
 				<viewtype>list</viewtype>
 				<preloaditems>2</preloaditems>
 				<focusposition>1</focusposition>
@@ -149,7 +242,7 @@
 						<width>500</width>
 						<height>42</height>
 						<aspectratio>stretch</aspectratio>
-						<texture flipx="true">selected2.png</texture>
+						<texture flipx="true">selected-white.png</texture>
 					</control>
 					<control type="label" id="3055">
 						<posx>30</posx>
@@ -210,7 +303,7 @@
 						<width>550</width>
 						<height>42</height>
 						<aspectratio>stretch</aspectratio>
-						<texture>selected3.png</texture>
+						<texture>selected-orange.png</texture>
 					</control>
 					<control type="label" id="4013">
 						<posx>30</posx>
@@ -236,7 +329,7 @@
 				<width>1280</width>
 				<height>55</height>
 				<aspectratio aligny="top">stretch</aspectratio>
-				<texture background="true">notification2.png</texture>
+				<texture background="true">notification-blue.png</texture>
 			</control>
 			<control type="label" id="501">
 				<posx>0</posx>
@@ -315,7 +408,7 @@
 			</control>
 			<control type="image" id="204">
 				<description>desitv image shadow</description>
-				<posx>555</posx>
+				<posx>551</posx>
 				<posy>200</posy>
 				<width>170</width>
 				<height>53</height>
@@ -324,9 +417,9 @@
 			</control>
 			<control type="label" id="205">
 				<description>loading label</description>
-				<posx>440</posx>
-				<posy>350</posy>
-				<width>400</width>
+				<posx>540</posx>
+				<posy>400</posy>
+				<width>300</width>
 				<height>20</height>
 				<font>font13</font>
 				<label>LOADING TV SHOWS...</label>
@@ -337,7 +430,7 @@
 			<control type="progress" id="206">
 				<description>loading progress control</description>
 				<posx>440</posx>
-				<posy>380</posy>
+				<posy>430</posy>
 				<width>400</width>
 				<height>10</height>
 			</control>
@@ -439,7 +532,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>0xFFFFFFFF</textcolor>
-				<shadowcolor>0x0081F3FD</shadowcolor>
 			</control>
 			
 			<control type="label" id="802">
@@ -453,7 +545,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>0xFF4A4A4A</textcolor>
-				<shadowcolor>0xFF2B2B2B</shadowcolor>
 			</control>
 			
 			<control type="label" id="803">
@@ -467,7 +558,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>0xFF4A4A4A</textcolor>
-				<shadowcolor>0xFF2B2B2B</shadowcolor>
 			</control>
 			
 			<control type="image">
@@ -523,7 +613,7 @@
 						<width>800</width>
 						<height>42</height>
 						<aspectratio>stretch</aspectratio>
-						<texture flipx="true">selected2.png</texture>
+						<texture flipx="true">selected-white.png</texture>
 					</control>
 					<control type="image">
 						<posx>30</posx>
@@ -543,6 +633,84 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<textcolor>0xFF2B2B2B</textcolor>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+		
+		
+		<!-- to add favorite controls group -->
+		<control type="group" id="900">
+			<control type="label">
+				<posx>600</posx>
+				<posy>50</posy>
+				<width>800</width>
+				<height>20</height>
+				<font>font13</font>
+				<label>CHOOSE AN IMAGE TO ADD TV SHOW TO FAVORITES.</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>0xFF2B2B2B</textcolor>
+			</control>
+			<control type="image">
+				<posx>800</posx>
+				<posy>75</posy>
+				<width>20</width>
+				<height>550</height>
+				<aspectratio aligny="top">stretch</aspectratio>
+				<texture background="true">list-slim-white.png</texture>
+			</control>
+			<control type="wraplist" id="901">
+				<posx>800</posx>
+				<posy>80</posy>
+				<width>450</width>
+				<height>600</height>
+				<onup>901</onup>
+				<onleft>901</onleft>
+				<onright>901</onright>
+				<ondown>901</ondown>
+				<viewtype>list</viewtype>
+				<focusposition>1</focusposition>
+				<orientation>vertical</orientation>
+				<scrolltime tween="sine" easing="out">200</scrolltime>
+				<itemlayout height="100" width="100">
+					<control type="image" id="9011">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>90</width>
+						<height>70</height>
+						<aspectratio>stretch</aspectratio>
+						<bordertexture border="5">button-nofocus.png</bordertexture>
+						<bordersize>3</bordersize>
+						<texture colordiffuse="0xFFD1EEFC">$INFO[ListItem.Icon]</texture>
+					</control>
+					<control type="image">
+						<posx>5</posx>
+						<posy>90</posy>
+						<width>80</width>
+						<height>70</height>
+						<aspectratio aligny="top">keep</aspectratio>
+						<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
+					</control>
+				</itemlayout>
+				<focusedlayout height="350" width="400">
+					<control type="image" id="9012">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>300</height>
+						<aspectratio>stretch</aspectratio>
+						<info>ListItem.Thumb</info>
+						<bordertexture border="5">button-focus3.png</bordertexture>
+						<bordersize>3</bordersize>
+					</control>
+					<control type="image">
+						<posx>5</posx>
+						<posy>300</posy>
+						<width>390</width>
+						<height>300</height>
+						<aspectratio aligny="top">keep</aspectratio>
+						<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
 					</control>
 				</focusedlayout>
 			</control>

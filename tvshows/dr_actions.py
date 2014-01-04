@@ -30,7 +30,7 @@ import logging
 import pickle
 import re
 import time
-import xbmcgui  # @UnresolvedImport
+import xbmcgui, xbmc  # @UnresolvedImport
 
     
 def check_cache(req_attrib, modelMap):
@@ -210,9 +210,13 @@ def refresh_cache(req_attrib, modelMap):
     tv_channels = tv_data['channels']
     total_iteration = len(tv_channels)
     progress_bar = modelMap['progress_control']
+    channel_image = modelMap['channel_image_control']
     for tv_channel_name, tv_channel in tv_channels.iteritems():
         logging.getLogger().debug('About to retrieve tv shows for channel %s' % tv_channel_name)
+        channel_image.setImage(tv_channel['iconimage'])
+        channel_image.setVisible(True)
         __retrieve_channel_tv_shows__(tv_channel_name, tv_channel)
+        channel_image.setVisible(False)
         current_index = current_index + 1
         percent = (current_index * 100) / total_iteration
         progress_bar.setPercent(percent)
@@ -247,6 +251,27 @@ def load_channels(req_attrib, modelMap):
     modelMap['tv_channel_items'] = tv_channel_items
     
 
+def load_favorite_tv_shows(req_attrib, modelMap):
+    context = AddonContext()
+    filepath = file.resolve_file_path(context.get_addon_data_path(), extraDirPath='data', filename='DR_Favorites.json', makeDirs=False)
+    logging.getLogger().debug('loading favorite tv shows from file : %s' % filepath)
+    favorite_tv_shows = _read_favorite_tv_shows_cache_(filepath)
+    if favorite_tv_shows is None:
+        return
+    favorite_tv_shows_items = []
+    for tv_show_name in favorite_tv_shows:
+        favorite_tv_show = favorite_tv_shows[tv_show_name]
+        item = xbmcgui.ListItem(label=tv_show_name, iconImage=favorite_tv_show['tv-show-thumb'], thumbnailImage=favorite_tv_show['tv-show-thumb'])
+        item.setProperty('channel-type', favorite_tv_show['channel-type'])
+        item.setProperty('channel-name', favorite_tv_show['channel-name'])
+        item.setProperty('tv-show-name', tv_show_name)
+        item.setProperty('tv-show-url', favorite_tv_show['tv-show-url'])
+        item.setProperty('tv-show-thumb', favorite_tv_show['tv-show-thumb'])
+        favorite_tv_shows_items.append(item)
+        
+    modelMap['favorite_tv_shows_items'] = favorite_tv_shows_items
+    
+
 def load_tv_shows(req_attrib, modelMap):
     logging.getLogger().debug('load tv shows...')
     tv_channels = CacheManager().get('tv_data')['channels']
@@ -255,11 +280,14 @@ def load_tv_shows(req_attrib, modelMap):
     channel_type = tv_channel['channelType']
     modelMap['channel_image'] = tv_channel['iconimage']
     modelMap['channel_name'] = channel_name
-    
+    selected_tv_show_name = ''
+    if req_attrib.has_key('tv-show-name'):
+        selected_tv_show_name = req_attrib['tv-show-name']
     tv_show_items = []
     if tv_channel.has_key('running_tvshows'):
         tv_shows = tv_channel['running_tvshows']
         logging.getLogger().debug('total tv shows to be displayed: %s' % str(len(tv_shows)))
+        index = 0
         for tv_show in tv_shows:
             name = tv_show['name']
             item = xbmcgui.ListItem(label=name)
@@ -268,6 +296,10 @@ def load_tv_shows(req_attrib, modelMap):
             item.setProperty('tv-show-name', name)
             item.setProperty('tv-show-url', tv_show['url'])
             tv_show_items.append(item)
+            if selected_tv_show_name == name:
+                modelMap['selected_tv_show_item'] = index
+            index = index + 1
+            
     
     modelMap['tv_show_items'] = tv_show_items
     
@@ -276,6 +308,76 @@ def hide_tv_show_episodes(req_attrib, modelMap):
 
 def hide_tv_show_episode_videos_list(req_attrib, modelMap):
     return
+
+def hide_tv_show_options(req_attrib, modelMap):
+    return
+
+def add_tv_show_favorite(req_attrib, modelMap):
+    logging.getLogger().debug('add tv show favorite...')
+    tv_show_url = req_attrib['tv-show-url']
+    tv_show_name = req_attrib['tv-show-name']
+    tv_show_thumb = req_attrib['tv-show-thumb']
+    channel_type = req_attrib['channel-type']
+    channel_name = req_attrib['channel-name']
+    logging.getLogger().debug('add tv show favorite...' + tv_show_url)
+    
+    favorites = CacheManager().get('tv_favorites')
+    if favorites is None:
+        favorites = {}
+    elif favorites.has_key(tv_show_name):
+        favorites.pop(tv_show_name)
+    
+    favorites[tv_show_name] = {'tv-show-name':tv_show_name, 'tv-show-thumb':tv_show_thumb, 'tv-show-url':tv_show_url, 'channel-name':channel_name, 'channel-type':channel_type}
+    context = AddonContext()
+    filepath = file.resolve_file_path(context.get_addon_data_path(), extraDirPath='data', filename='DR_Favorites.json', makeDirs=False)
+    logging.getLogger().debug(favorites)
+    _write_favorite_tv_shows_cache_(filepath, favorites)
+    
+    notification = "XBMC.Notification(%s,%s,%s,%s)" % (tv_show_name, 'ADDED TO FAVORITES', 2500, tv_show_thumb)
+    xbmc.executebuiltin(notification)
+    
+def load_remove_tv_show_favorite(req_attrib, modelMap):
+    logging.getLogger().debug('load remove tv show favorite...')
+    modelMap['tv-show-name'] = req_attrib['tv-show-name']
+    modelMap['tv-show-thumb'] = req_attrib['tv-show-thumb']
+    logging.getLogger().debug('display remove tv show favorite...')
+    
+def hide_remove_favorite(req_attrib, modelMap):
+    logging.getLogger().debug('hide remove tv show favorite...')
+    
+def remove_favorite(req_attrib, modelMap):
+    logging.getLogger().debug('remove tv show favorite...')
+    favorite = CacheManager().get('selected_favorite')
+    favorite_thumb = CacheManager().get('selected_favorite_thumb')
+    favorites = CacheManager().get('tv_favorites')
+    if favorites is None:
+        favorites = {}
+    elif favorites.has_key(favorite):
+        favorites.pop(favorite)
+    
+    context = AddonContext()
+    filepath = file.resolve_file_path(context.get_addon_data_path(), extraDirPath='data', filename='DR_Favorites.json', makeDirs=False)
+    logging.getLogger().debug(favorites)
+    _write_favorite_tv_shows_cache_(filepath, favorites)
+    
+    notification = "XBMC.Notification(%s,%s,%s,%s)" % (favorite, 'REMOVED FAVORITE', 2500, favorite_thumb)
+    xbmc.executebuiltin(notification)
+    
+    modelMap['reload_favorite_tv_shows_items'] = True
+    if len(favorites) > 0:
+        favorite_tv_shows_items = []
+        for tv_show_name in favorites:
+            favorite_tv_show = favorites[tv_show_name]
+            item = xbmcgui.ListItem(label=tv_show_name, iconImage=favorite_tv_show['tv-show-thumb'], thumbnailImage=favorite_tv_show['tv-show-thumb'])
+            item.setProperty('channel-type', favorite_tv_show['channel-type'])
+            item.setProperty('channel-name', favorite_tv_show['channel-name'])
+            item.setProperty('tv-show-name', tv_show_name)
+            item.setProperty('tv-show-url', favorite_tv_show['tv-show-url'])
+            item.setProperty('tv-show-thumb', favorite_tv_show['tv-show-thumb'])
+            favorite_tv_shows_items.append(item)
+            
+        modelMap['favorite_tv_shows_items'] = favorite_tv_shows_items
+    
     
 def load_tv_show_episodes(req_attrib, modelMap):
     logging.getLogger().debug('load tv show episodes...')
@@ -328,7 +430,7 @@ def load_tv_show_episodes(req_attrib, modelMap):
                     tv_show_episode_items.append(item)
     
     modelMap['tv_show_episode_items'] = tv_show_episode_items
-
+    
 
 def __retrieveTVShowEpisodes__(threads, tv_show_name, channel_type, channel_name):
     tv_show_episode_items = []
@@ -454,6 +556,18 @@ def _read_tv_channels_cache_(filepath):
         tv_data = jsonfile.read_file(filepath)
         CacheManager().put('tv_data', tv_data)
     return tv_data
+
+
+def _read_favorite_tv_shows_cache_(filepath):
+    favorites = CacheManager().get('tv_favorites')
+    if favorites is None:
+        favorites = jsonfile.read_file(filepath)
+        CacheManager().put('tv_favorites', favorites)
+    return favorites
+
+def _write_favorite_tv_shows_cache_(filepath, data):
+    CacheManager().put('tv_favorites', data)
+    jsonfile.write_file(filepath, data)
 
 BASE_WSITE_URL = base64.b64decode('aHR0cDovL3d3dy5kZXNpcnVsZXoubmV0')
 

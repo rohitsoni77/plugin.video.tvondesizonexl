@@ -22,7 +22,10 @@ from BeautifulSoup import BeautifulSoup
 from urllib2 import HTTPError
 from xoze.utils.patterns import Singleton
 import cookielib
+import htmlentitydefs
 import httplib
+import logging
+import re
 import urllib
 import urllib2
 '''
@@ -79,6 +82,18 @@ def unescape(url):
     for code in htmlCodes:
         url = url.replace(code[1], code[0])
     return url
+
+
+def cUConvert(m): return unichr(int(m.group(1)))
+def cTConvert(m): return unichr(htmlentitydefs.name2codepoint.get(m.group(1), 32))
+
+def convertHTMLCodes(html):
+    try:
+        html = re.sub('&#(\d{1,5});', cUConvert, html.decode('utf-8', 'replace'))
+        html = re.sub('&(\w+?);', cTConvert, html)
+    except Exception, e:
+        logging.getLogger().error(e)
+    return html
 
 def getUserAgentForXBMCPlay():
     return 'User-Agent=' + urllib.quote_plus('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_1) AppleWebKit/534.48.3 (KHTML, like Gecko) Version/5.1 Safari/534.48.3' + '&Accept=' + urllib.quote_plus('text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8') + '&Accept_Encoding=' + urllib.quote_plus('gzip, deflate'))

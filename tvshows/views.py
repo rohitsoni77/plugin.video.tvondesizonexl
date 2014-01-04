@@ -34,6 +34,7 @@ def show_wish_view(modelMap, window):
     window.getControl(500).setVisible(False)
     window.getControl(600).setVisible(False)
     window.getControl(800).setVisible(False)
+    window.getControl(900).setVisible(False)
     window.getControl(700).setVisible(True)
     window.setFocusId(701)
 
@@ -51,3 +52,4 @@ def handle_init(window, control_id):
     window.getControl(600).setVisible(False)
     window.getControl(700).setVisible(False)
     window.getControl(800).setVisible(False)
+    window.getControl(900).setVisible(False)

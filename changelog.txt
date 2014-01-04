@@ -1,3 +1,7 @@
+[B]Version v2.1.0[/B]
+- As per feature request received, added FAVORITES section.
+- Improved new icon by increasing font size of DESI ZONE.
+
 [B]Version v2.0.2[/B]
 - Fixed Pakistani tv show video stream link resolver.
 - Added new icon for new look.

@@ -63,6 +63,8 @@ class LoggingHandler(logging.Handler):
     def emit(self, record):
         if type(record.msg) is Exception:
             logging.exception(record.msg)
+            import traceback
+            traceback.print_exc()
         else:
             message = record.msg
             if type(message) is not str:
