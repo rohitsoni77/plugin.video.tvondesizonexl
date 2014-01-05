@@ -1,18 +1,21 @@
-[B]Version v2.1.1[/B]
+[B]Version 2.1.2[/B]
+- Realized better to use wraplist for FAVORITES section.
+
+[B]Version 2.1.1[/B]
 - First item is selected in fixed list of FAVORITES section.
 - Changed color to black from white in notifications.
 
-[B]Version v2.1.0[/B]
+[B]Version 2.1.0[/B]
 - As per feature request received, added FAVORITES section.
 - Improved new icon by increasing font size of DESI ZONE.
 
-[B]Version v2.0.2[/B]
+[B]Version 2.0.2[/B]
 - Fixed Pakistani tv show video stream link resolver.
 - Added new icon for new look.
 
-[B]Version v2.0.1[/B]
+[B]Version 2.0.1[/B]
 - Small fixes to load TV Shows under Life OK.
 
-[B]Version v2.0.0[/B]
+[B]Version 2.0.0[/B]
 - TV on DESI ZONE with NEW LOOK.
 - Optimized for fastest response.

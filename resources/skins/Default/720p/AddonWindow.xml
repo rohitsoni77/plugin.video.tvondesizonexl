@@ -37,7 +37,7 @@
 				<textcolor>0xFF4A4A4A</textcolor>
 			</control>
 			
-			<control type="fixedlist" id="105">
+			<control type="wraplist" id="105">
 				<posx>20</posx>
 				<posy>50</posy>
 				<width>1260</width>
@@ -47,7 +47,7 @@
 				<onright>105</onright>
 				<ondown>102</ondown>
 				<viewtype>list</viewtype>
-				<focusposition>0</focusposition>
+				<focusposition>2</focusposition>
 				<orientation>horizontal</orientation>
 				<scrolltime tween="sine" easing="out">200</scrolltime>
 				<itemlayout height="180" width="240">
@@ -93,7 +93,7 @@
 			</control>
 			<control type="button" id="106">
 			      <description>remove this favorite</description>
-			      <posx>35</posx>
+			      <posx>510</posx>
 			      <posy>200</posy>
 			      <width>200</width>
 			      <height>40</height>
