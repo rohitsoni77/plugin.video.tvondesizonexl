@@ -47,7 +47,7 @@
 				<onright>105</onright>
 				<ondown>102</ondown>
 				<viewtype>list</viewtype>
-				<focusposition>2</focusposition>
+				<focusposition>0</focusposition>
 				<orientation>horizontal</orientation>
 				<scrolltime tween="sine" easing="out">200</scrolltime>
 				<itemlayout height="180" width="240">
@@ -93,8 +93,8 @@
 			</control>
 			<control type="button" id="106">
 			      <description>remove this favorite</description>
-			      <posx>510</posx>
-			      <posy>230</posy>
+			      <posx>35</posx>
+			      <posy>200</posy>
 			      <width>200</width>
 			      <height>40</height>
 			      <label>REMOVE FAVORITE</label>
@@ -340,7 +340,7 @@
 				<label>LOADING...</label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>0xFFF7F7F7</textcolor>
+				<textcolor>0xFF4A4A4A</textcolor>
 			</control>
 			
 			<control type="progress" id="502">
@@ -372,7 +372,7 @@
 				<label>OOOPS!!! :( ERROR... PLEASE PRESS MENU BUTTON TO GO BACK AND TRY AGAIN LATER.  </label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>0xFFF7F7F7</textcolor>
+				<textcolor>0xFF4A4A4A</textcolor>
 			</control>
 			
 		</control>
@@ -642,7 +642,7 @@
 		<!-- to add favorite controls group -->
 		<control type="group" id="900">
 			<control type="label">
-				<posx>600</posx>
+				<posx>620</posx>
 				<posy>50</posy>
 				<width>800</width>
 				<height>20</height>
