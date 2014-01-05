@@ -5,7 +5,7 @@
 		<posy>0</posy>
 	</coordinates>
 	<!-- <defaultcontrol always="false">102</defaultcontrol> -->
-	<backgroundcolor>0x00D1EEFC</backgroundcolor>
+	<backgroundcolor>0x002B2B2B</backgroundcolor>
 	<controls>
 		<!-- tv channels group -->
 		<control type="group" id="100">
@@ -20,7 +20,7 @@
 				<label>FAVORITES</label>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>0xFF4A4A4A</textcolor>
+				<textcolor>0xFFF7F7F7</textcolor>
 			</control>
 			
 			<control type="label" id="104">
@@ -34,14 +34,14 @@
 				<label>TO ADD NEW TV SHOW FAVORITE, FIRST NAVIGATE TO CHANNEL TV SHOWS AND SELECT TV SHOW. THEREAFTER LONG PRESS MENU BUTTON ON APPLE TV OR RIGHT CLICK ON HTPC.</label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>0xFF4A4A4A</textcolor>
+				<textcolor>0xFFF7F7F7</textcolor>
 			</control>
 			
 			<control type="wraplist" id="105">
 				<posx>20</posx>
-				<posy>50</posy>
+				<posy>40</posy>
 				<width>1260</width>
-				<height>190</height>
+				<height>210</height>
 				<onup>102</onup>
 				<onleft>105</onleft>
 				<onright>105</onright>
@@ -53,27 +53,27 @@
 				<itemlayout height="180" width="240">
 					<control type="image" id="1051">
 						<posx>0</posx>
-						<posy>0</posy>
+						<posy>10</posy>
 						<width>220</width>
 						<height>160</height>
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>3</bordersize>
-						<texture colordiffuse="0xFFD1EEFC">$INFO[ListItem.Icon]</texture>
+						<texture colordiffuse="0xFFDBDDDE">$INFO[ListItem.Icon]</texture>
 					</control>
 					<control type="image">
 						<posx>0</posx>
-						<posy>160</posy>
+						<posy>170</posy>
 						<width>220</width>
 						<height>160</height>
 						<aspectratio aligny="top">keep</aspectratio>
 						<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
 					</control>
 				</itemlayout>
-				<focusedlayout height="190" width="240">
+				<focusedlayout height="210" width="240">
 					<control type="image" id="9012">
 						<posx>-10</posx>
-						<posy>-10</posy>
+						<posy>0</posy>
 						<width>240</width>
 						<height>180</height>
 						<aspectratio>stretch</aspectratio>
@@ -83,7 +83,7 @@
 					</control>
 					<control type="image">
 						<posx>-10</posx>
-						<posy>170</posy>
+						<posy>180</posy>
 						<width>240</width>
 						<height>180</height>
 						<aspectratio aligny="top">keep</aspectratio>
@@ -113,7 +113,7 @@
 				<label>TV CHANNELS</label>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>0xFF4A4A4A</textcolor>
+				<textcolor>0xFFF7F7F7</textcolor>
 			</control>
 			<control type="image">
 				<description>horizontal line</description>
@@ -122,7 +122,7 @@
 				<posy>290</posy>
 				<width>1270</width>
 				<height>1</height>
-				<texture>title-line.png</texture>
+				<texture>title-line-white.png</texture>
 			</control>
 			<control type="panel" id="102">
 				<posx>15</posx>
@@ -150,12 +150,12 @@
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>3</bordersize>
-						<texture colordiffuse="0xFFD1EEFC">$INFO[ListItem.Icon]</texture>
+						<texture colordiffuse="0xFFC7C7CC">$INFO[ListItem.Icon]</texture>
 					</control>
 					<control type="image">
-						<posx>5</posx>
+						<posx>1</posx>
 						<posy>145</posy>
-						<width>160</width>
+						<width>168</width>
 						<height>100</height>
 						<aspectratio aligny="top">keep</aspectratio>
 						<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
@@ -173,9 +173,9 @@
 						<bordersize>3</bordersize>
 					</control>
 					<control type="image">
-						<posx>7</posx>
+						<posx>1</posx>
 						<posy>147</posy>
-						<width>160</width>
+						<width>172</width>
 						<height>100</height>
 						<aspectratio aligny="top">keep</aspectratio>
 						<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
@@ -198,7 +198,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>0xFFFFFFFF</textcolor>
-				<shadowcolor>0x0081F3FD</shadowcolor>
 			</control>
 			<control type="image">
 				<posx>300</posx>
@@ -206,7 +205,7 @@
 				<width>20</width>
 				<height>598</height>
 				<aspectratio aligny="top">stretch</aspectratio>
-				<texture background="true">list-slim-black.png</texture>
+				<texture background="true">list-slim-blue-light.png</texture>
 			</control>
 			<control type="list" id="305">
 				<posx>300</posx>
@@ -232,7 +231,7 @@
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
-						<textcolor>0xFF1F1F21</textcolor>
+						<textcolor>0xFFF7F7F7</textcolor>
 					</control>
 				</itemlayout>
 				<focusedlayout height="42" width="900">
@@ -293,7 +292,7 @@
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
-						<textcolor>0xFF1F1F21</textcolor>
+						<textcolor>0xFFF7F7F7</textcolor>
 					</control>
 				</itemlayout>
 				<focusedlayout height="42" width="900">
@@ -314,7 +313,7 @@
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
-						<textcolor>0xFFF7F7F7</textcolor>
+						<textcolor>0xFF2B2B2B</textcolor>
 					</control>
 				</focusedlayout>
 			</control>
@@ -340,7 +339,7 @@
 				<label>LOADING...</label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>0xFF4A4A4A</textcolor>
+				<textcolor>0xFFF7F7F7</textcolor>
 			</control>
 			
 			<control type="progress" id="502">
@@ -372,7 +371,7 @@
 				<label>OOOPS!!! :( ERROR... PLEASE PRESS MENU BUTTON TO GO BACK AND TRY AGAIN LATER.  </label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>0xFF4A4A4A</textcolor>
+				<textcolor>0xFFF7F7F7</textcolor>
 			</control>
 			
 		</control>
@@ -425,7 +424,7 @@
 				<label>LOADING TV SHOWS...</label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>0xFF4A4A4A</textcolor>
+				<textcolor>0xFFF7F7F7</textcolor>
 			</control>
 			<control type="progress" id="206">
 				<description>loading progress control</description>
@@ -461,7 +460,7 @@
 				<width>1000</width>
 				<height>100</height>
 				<font>font45caps_title</font>
-				<label>HAPPY NEW YEAR</label>
+				<label></label>
 				<align>center</align>
 				<aligny>top</aligny>
 				<textcolor>0xFFFF5E3A</textcolor>
@@ -510,7 +509,7 @@
 			      <posy>680</posy>
 			      <width>300</width>
 			      <height>40</height>
-			      <label>THANKS TO AJ &amp; PROCEED</label>
+			      <label></label>
 			      <font>font13</font>
 			      <align>center</align>
 			</control>
@@ -544,7 +543,7 @@
 				<label>TV SHOW</label>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>0xFF4A4A4A</textcolor>
+				<textcolor>0xFFF7F7F7</textcolor>
 			</control>
 			
 			<control type="label" id="803">
@@ -557,7 +556,7 @@
 				<label>TV SHOW EPISODE</label>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>0xFF4A4A4A</textcolor>
+				<textcolor>0xFFF7F7F7</textcolor>
 			</control>
 			
 			<control type="image">
@@ -566,7 +565,7 @@
 				<width>20</width>
 				<height>520</height>
 				<aspectratio aligny="top">stretch</aspectratio>
-				<texture background="true">list-slim-black.png</texture>
+				<texture background="true">list-slim-blue-light.png</texture>
 			</control>
 			
 			
@@ -603,7 +602,7 @@
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
-						<textcolor>0xFF1F1F21</textcolor>
+						<textcolor>0xFFF7F7F7</textcolor>
 					</control>
 				</itemlayout>
 				<focusedlayout height="42" width="900">
@@ -682,7 +681,7 @@
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>3</bordersize>
-						<texture colordiffuse="0xFFD1EEFC">$INFO[ListItem.Icon]</texture>
+						<texture colordiffuse="0xFF4A4A4A">$INFO[ListItem.Icon]</texture>
 					</control>
 					<control type="image">
 						<posx>5</posx>

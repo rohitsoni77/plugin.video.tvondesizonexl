@@ -46,7 +46,7 @@ def show_refresh_view(modelMap, window):
         window.getControl(205).setLabel("LOADING TV SHOWS...")
         window.getControl(200).setVisible(True)
         modelMap['progress_control'] = window.getControl(206)
-        image = xbmcgui.ControlImage(440, 320, 118, 100, filename="", aspectRatio=0, colorDiffuse='0xFFD1EEFC')
+        image = xbmcgui.ControlImage(440, 320, 118, 100, filename="", aspectRatio=0, colorDiffuse='0xFFF7F7F7')
         window.addControl(image)
         image.setVisible(False)
         controls = CacheManager().get('controls_to_be_deleted')
@@ -83,6 +83,7 @@ def show_tv_shows_view(modelMap, window):
     window.getControl(900).setVisible(False)
     window.getControl(100).setVisible(False)
     window.getControl(300).setVisible(True)
+    window.getControl(305).setEnabled(True)
     logging.getLogger().debug('total tv shows: %s' % str(len(modelMap['tv_show_items'])))
     window.getControl(305).reset()
     window.getControl(305).addItems(modelMap['tv_show_items'])
@@ -91,7 +92,7 @@ def show_tv_shows_view(modelMap, window):
         window.getControl(305).selectItem(modelMap['selected_tv_show_item'])
     
     window.getControl(303).setLabel(modelMap['channel_name'])
-    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=modelMap['channel_image'], aspectRatio=0, colorDiffuse='0xFFD1EEFC')
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=modelMap['channel_image'], aspectRatio=0, colorDiffuse='0xFFF7F7F7')
     window.addControl(image)
     CacheManager().put('channel_image', modelMap['channel_image'])
     controls = CacheManager().get('controls_to_be_deleted')
@@ -99,7 +100,7 @@ def show_tv_shows_view(modelMap, window):
     logging.getLogger().debug('Inside VIEWS:list of temp controls to add size : %s' % str(len(controls)))
     
 def show_tv_show_episodes_view(modelMap, window):
-    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFD1EEFC')
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
     window.addControl(image)
     controls = CacheManager().get('controls_to_be_deleted')
     controls.append(image)
@@ -107,6 +108,7 @@ def show_tv_show_episodes_view(modelMap, window):
         logging.getLogger().debug('found an error message...')
         window.getControl(500).setVisible(False)
         window.getControl(600).setVisible(True)
+        window.getControl(305).setEnabled(True)
         logging.getLogger().exception(modelMap['error'])
     else:
         logging.getLogger().debug('total tv show episodes: %s' % str(len(modelMap['tv_show_episode_items'])))
@@ -120,7 +122,7 @@ def show_tv_show_episodes_view(modelMap, window):
     
     
 def show_tv_show_episode_videos_list_view(modelMap, window):
-    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFD1EEFC')
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
     window.addControl(image)
     controls = CacheManager().get('controls_to_be_deleted')
     controls.append(image)
@@ -140,7 +142,7 @@ def show_tv_show_episode_videos_list_view(modelMap, window):
     window.setFocusId(804)
     
 def show_tv_show_options(modelMap, window):
-    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFD1EEFC')
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
     window.addControl(image)
     
     controls = CacheManager().get('controls_to_be_deleted')
@@ -150,6 +152,7 @@ def show_tv_show_options(modelMap, window):
         logging.getLogger().debug('found an error message...')
         window.getControl(500).setVisible(False)
         window.getControl(600).setVisible(True)
+        window.getControl(305).setEnabled(True)
         logging.getLogger().exception(modelMap['error'])
     else:
         window.getControl(502).setPercent(100)
@@ -188,7 +191,7 @@ def hide_remove_favorite(modelMap, window):
     window.setFocusId(102)
     
 def hide_tv_show_options(modelMap, window):
-    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFD1EEFC')
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
     window.addControl(image)
     controls = CacheManager().get('controls_to_be_deleted')
     controls.append(image)
@@ -200,7 +203,7 @@ def hide_tv_show_options(modelMap, window):
     
     
 def hide_tv_show_episodes_view(modelMap, window):
-    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFD1EEFC')
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
     window.addControl(image)
     controls = CacheManager().get('controls_to_be_deleted')
     controls.append(image)
@@ -213,7 +216,7 @@ def hide_tv_show_episodes_view(modelMap, window):
     
     
 def hide_tv_show_episode_videos_list_view(modelMap, window):
-    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFD1EEFC')
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
     window.addControl(image)
     controls = CacheManager().get('controls_to_be_deleted')
     controls.append(image)
@@ -226,7 +229,7 @@ def hide_tv_show_episode_videos_list_view(modelMap, window):
     
     
 def show_tv_show_episode_videos_view(modelMap, window):
-    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFD1EEFC')
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
     window.addControl(image)
     controls = CacheManager().get('controls_to_be_deleted')
     controls.append(image)
@@ -242,7 +245,7 @@ def show_tv_show_episode_videos_view(modelMap, window):
     
 
 def play_video_streams(modelMap, window):
-    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFD1EEFC')
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
     window.addControl(image)
     controls = CacheManager().get('controls_to_be_deleted')
     controls.append(image)
@@ -322,6 +325,7 @@ def handle_tv_show_selected_for_options(window, control_id):
         req_attrib_map['tv-show-url'] = item.getProperty('tv-show-url')
         window.getControl(500).setVisible(True)
         window.getControl(502).setPercent(0)
+        window.getControl(305).setEnabled(False)
         window.getControl(501).setLabel('LOADING IMAGES FOR [B]' + req_attrib_map['tv-show-name'] + '[/B]...')
         
     return req_attrib_map
@@ -357,6 +361,7 @@ def handle_tv_show_selected(window, control_id):
         req_attrib_map['tv-show-name'] = item.getProperty('tv-show-name')
         req_attrib_map['tv-show-url'] = item.getProperty('tv-show-url')
         window.getControl(500).setVisible(True)
+        window.getControl(305).setEnabled(False)
         window.getControl(501).setLabel('LOADING EPISODES FOR [B]' + req_attrib_map['tv-show-name'] + '[/B]...')
         
     return req_attrib_map

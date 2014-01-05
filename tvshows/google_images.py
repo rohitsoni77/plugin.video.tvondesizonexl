@@ -36,8 +36,8 @@ def load_tv_show_images(req_attrib, modelMap):
     channel_type = req_attrib['channel-type']
     channel_name = req_attrib['channel-name']
     
-    logging.getLogger().debug('search tv show images...' + tv_show_name.lower() + ' poster')
-    tv_show_options = get_image(tv_show_name.lower() + ' poster' , tv_show_name, tv_show_url, channel_type, channel_name)
+    logging.getLogger().debug('search tv show images...' + channel_name.lower() + ' ' + tv_show_name.lower() + ' poster')
+    tv_show_options = get_image(channel_name.lower() + ' ' + tv_show_name.lower() + ' poster' , tv_show_name, tv_show_url, channel_type, channel_name)
     
     modelMap['tv-show-images'] = tv_show_options
         

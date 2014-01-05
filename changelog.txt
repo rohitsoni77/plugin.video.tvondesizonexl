@@ -1,3 +1,7 @@
+[B]Version 2.1.3[/B]
+- Added CHANNEL NAME to google images search for tv show.
+- Changed colors to suit the mood while watching TV in dim light.
+
 [B]Version 2.1.2[/B]
 - Realized better to use wraplist for FAVORITES section.
 
