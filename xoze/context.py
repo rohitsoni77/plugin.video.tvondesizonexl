@@ -140,10 +140,12 @@ class AddonContext(Singleton):
         self._current_addon = None
         self._current_addon_id = None
         self._service_publisher = None
-        logging.getLogger().debug('addon initialized!')
+        logging.getLogger().debug('context to be initialized...')
         self._xoze_context = XozeContext(self.get_conf('contextFiles'), self.get_addon(), self.get_addon_path(), self.get_addon_data_path())
-        self._start_services()
+        logging.getLogger().debug('snapvideo to be initialized...')
         SnapVideo(context=self)  # To initialize
+        logging.getLogger().debug('web services to be initialized...')
+        self._start_services()
         
     def _start_services(self):
         """starts JSON RPC server if service layer needs to be enabled for current app. this should be STEP 3 for starting application."""

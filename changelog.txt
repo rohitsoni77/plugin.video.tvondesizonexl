@@ -1,3 +1,6 @@
+[B]Version 2.1.4[/B]
+- Added new XOZE v1.0.1 to provide support for external players.
+
 [B]Version 2.1.3[/B]
 - Added CHANNEL NAME to google images search for tv show.
 - Changed colors to suit the mood while watching TV in dim light.

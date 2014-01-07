@@ -38,9 +38,9 @@ def retrieveVideoInfo(video_id):
         video.set_thumb_image(img_link)
         video.set_name("PLAYWIRE Video")
         if re.search(r'\Artmp', video_link):
-            video.add_stream_link(STREAM_QUAL_HD_720, video_link, addUserAgent=False)
+            video.add_stream_link(STREAM_QUAL_HD_720, video_link)
         else:
-            video.add_stream_link(STREAM_QUAL_HD_720, video_link, addUserAgent=True)
+            video.add_stream_link(STREAM_QUAL_HD_720, video_link)
     except:
         video.set_stopped(True)
     return video

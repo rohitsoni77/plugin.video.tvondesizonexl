@@ -1,2 +1,6 @@
-[B]Version v1.0.0[/B]
+[B]Version 1.0.1[/B]
+- Initialize SnapVideo before service layer is enabled.
+- Removed UserAgent and Referer headers from video streams to provide support for external players.
+
+[B]Version 1.0.0[/B]
 - Initial version of XOZE.

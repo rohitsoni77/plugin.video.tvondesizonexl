@@ -53,13 +53,13 @@ def retrieveVideoInfo(video_id):
             dm_LD = urllib.unquote_plus(matchLD[0]).replace("\\", "")
         
         if dm_LD is not None:
-            video.add_stream_link(STREAM_QUAL_LOW, dm_LD,addUserAgent=True , addReferer=True, refererUrl=video_link)
+            video.add_stream_link(STREAM_QUAL_LOW, dm_LD,addUserAgent=False , addReferer=False, refererUrl=video_link)
         if dm_SD is not None:
-            video.add_stream_link(STREAM_QUAL_SD, dm_SD,addUserAgent=True , addReferer=True, refererUrl=video_link)
+            video.add_stream_link(STREAM_QUAL_SD, dm_SD,addUserAgent=False , addReferer=False, refererUrl=video_link)
         if dm_720 is not None:
-            video.add_stream_link(STREAM_QUAL_HD_720, dm_720,addUserAgent=True , addReferer=True, refererUrl=video_link)
+            video.add_stream_link(STREAM_QUAL_HD_720, dm_720,addUserAgent=False , addReferer=False, refererUrl=video_link)
         if dm_1080 is not None:
-            video.add_stream_link(STREAM_QUAL_HD_1080, dm_1080,addUserAgent=True , addReferer=True, refererUrl=video_link)
+            video.add_stream_link(STREAM_QUAL_HD_1080, dm_1080,addUserAgent=False , addReferer=False, refererUrl=video_link)
         if len(video.get_streams()) == 0:
             video.set_stopped(True)
         else:

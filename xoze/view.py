@@ -113,8 +113,6 @@ class AddonWindow(xbmcgui.WindowXML):
     
     def onInit(self):
         logging.getLogger().debug('Window OnInit called...')
-        self.getControl(100).setVisible(False)
-        self.getControl(200).setVisible(False)
         system.hide_busy_dialog()
         self._handle_event_func('INIT')
     

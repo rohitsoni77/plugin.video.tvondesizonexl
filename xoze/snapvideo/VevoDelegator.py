@@ -39,7 +39,7 @@ def retrieveVideoInfo(videoUrl):
         addon_url += '&mode=playPlaylist'
         addon_url += '&duration=210'
         addon_url += '&page=1'
-        video_info.add_stream_link(XBMC_EXECUTE_PLUGIN, addon_url, addUserAgent=False, addReferer=False)
+        video_info.add_stream_link(XBMC_EXECUTE_PLUGIN, addon_url)
         video_info.set_thumb_image('')
         video_info.set_name(' ')
     else:
@@ -61,7 +61,7 @@ def retrieveVideoInfo(videoUrl):
         addon_url += 'url=%s' % vevo_id
         addon_url += '&mode=playVideo'
         addon_url += '&duration=210'
-        video_info.add_stream_link(STREAM_QUAL_SD, addon_url, addUserAgent=False, addReferer=False)
+        video_info.add_stream_link(STREAM_QUAL_SD, addon_url)
         video_info.set_thumb_image(video_image)
         video_info.set_name(title)
     logging.getLogger().debug(addon_url)

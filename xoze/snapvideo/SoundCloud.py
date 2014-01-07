@@ -25,7 +25,7 @@ def retrieveAudioInfo(audioUrl):
     video_info = Video()
     video_info.set_video_host(getVideoHost())
     video_info.set_id(url)
-    video_info.add_stream_link(STREAM_QUAL_SD, jObj['http_mp3_128_url'], addUserAgent=False, addReferer=False)
+    video_info.add_stream_link(STREAM_QUAL_SD, jObj['http_mp3_128_url'])
     video_info.set_thumb_image('')
     video_info.set_name('')
     
