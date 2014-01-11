@@ -7,8 +7,21 @@
 	<!-- <defaultcontrol always="false">102</defaultcontrol> -->
 	<backgroundcolor>0x002B2B2B</backgroundcolor>
 	<controls>
+			<control type="button" id="10">
+			      <posx>1240</posx>
+			      <posy>2</posy>
+			      <width>38</width>
+			      <height>38</height>
+			      <align>center</align>
+			      <colordiffuse>FFFFFFFF</colordiffuse>
+			      <texturefocus>back-button-focus.png</texturefocus>
+			      <texturenofocus>back-button-nofocus.png</texturenofocus>
+			</control>
+			
 		<!-- tv channels group -->
 		<control type="group" id="100">
+			
+		
 			<control type="label" id="103">
 				<description>FAVORITES</description>
 				<posx>20</posx>
@@ -89,6 +102,19 @@
 						<aspectratio aligny="top">keep</aspectratio>
 						<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
 					</control>
+					<control type="label" id="101">
+						<description>show name</description>
+						<posx>105</posx>
+						<posy>190</posy>
+						<width>400</width>
+						<height>12</height>
+						<font>font12</font>
+						<label>$INFO[ListItem.Label]</label>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>0xFFF7F7F7</textcolor>
+						<visible>Control.HasFocus(105)</visible>
+					</control>
 				</focusedlayout>
 			</control>
 			<control type="button" id="106">
@@ -100,6 +126,12 @@
 			      <label>REMOVE FAVORITE</label>
 			      <font>font13</font>
 			      <align>center</align>
+			      <colordiffuse>FFFFFFFF</colordiffuse>
+			      <texturefocus>button-focus-new.png</texturefocus>
+			      <texturenofocus>button-nofocus-new.png</texturenofocus>
+			      <textcolor>0xFFD7D7D7</textcolor>
+			      <focusedcolor>0xFFF7F7F7</focusedcolor>
+			      <disabledcolor>0x80FFFFFF</disabledcolor>
 			</control>
 			
 			<control type="label" id="101">
@@ -134,7 +166,7 @@
 				<onup>105</onup>
 				<onleft>102</onleft>
 				<onright>102</onright>
-				<ondown>105</ondown>
+				<ondown>102</ondown>
 				<viewtype>list</viewtype>
 				<preloaditems>2</preloaditems>
 				<focusposition>1</focusposition>

@@ -18,9 +18,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 '''
+from xoze.context import AddonContext
 import logging
-import xbmcgui, xbmc  # @UnresolvedImport
-from xoze.utils.cache import CacheManager
 
 def show_start_view(modelMap, window):
     logging.getLogger().debug('starting addon')
@@ -53,3 +52,9 @@ def handle_init(window, control_id):
     window.getControl(700).setVisible(False)
     window.getControl(800).setVisible(False)
     window.getControl(900).setVisible(False)
+    displayBackControl = AddonContext().get_addon().getSetting('displayBackControl')
+    if displayBackControl is not None and displayBackControl == 'true':
+        window.getControl(10).setVisible(True)
+    else:
+        window.getControl(10).setVisible(False)
+    

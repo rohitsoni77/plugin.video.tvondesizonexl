@@ -33,4 +33,8 @@
 		<!-- <setting id="autoplayback" label="Auto playback first video source [Dailymotion]" type="bool" default="true" /> -->
 		<setting id="wishDisplayed" type="text" label="WISH" default="hide" visible="false"/>
 	</category>
+	<category label="View">
+		<setting label="[B]Controls[/B]" type="lsep" />
+		<setting id="displayBackControl" label="Display BACK button" type="bool" default="false" />
+	</category>
 </settings>
