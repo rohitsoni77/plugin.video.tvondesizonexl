@@ -284,24 +284,41 @@ def load_tv_shows(req_attrib, modelMap):
     if req_attrib.has_key('tv-show-name'):
         selected_tv_show_name = req_attrib['tv-show-name']
     tv_show_items = []
+    index = 0
     if tv_channel.has_key('running_tvshows'):
         tv_shows = tv_channel['running_tvshows']
         logging.getLogger().debug('total tv shows to be displayed: %s' % str(len(tv_shows)))
-        index = 0
-        for tv_show in tv_shows:
-            name = tv_show['name']
-            item = xbmcgui.ListItem(label=name)
-            item.setProperty('channel-type', channel_type)
-            item.setProperty('channel-name', channel_name)
-            item.setProperty('tv-show-name', name)
-            item.setProperty('tv-show-url', tv_show['url'])
-            tv_show_items.append(item)
-            if selected_tv_show_name == name:
-                modelMap['selected_tv_show_item'] = index
-            index = index + 1
-            
+        index = _prepare_tv_show_items_(tv_shows, channel_type, channel_name, selected_tv_show_name, tv_show_items, False, modelMap, index)
     
+    hideFinishedShow = AddonContext().get_addon().getSetting('drHideFinished')
+    
+    if tv_channel.has_key('finished_tvshows') and hideFinishedShow is not None and hideFinishedShow == 'false':
+        tv_shows = tv_channel["finished_tvshows"]
+        logging.getLogger().debug('total finsihed tv shows to be displayed: %s' % str(len(tv_shows)))
+        index = _prepare_tv_show_items_(tv_shows, channel_type, channel_name, selected_tv_show_name, tv_show_items, True, modelMap, index)
+        
     modelMap['tv_show_items'] = tv_show_items
+    
+    
+def _prepare_tv_show_items_(tv_shows, channel_type, channel_name, selected_tv_show_name, tv_show_items, is_finished_shows, modelMap, index):
+    for tv_show in tv_shows:
+        name = tv_show['name']
+        if is_finished_shows:
+            name = name + ' [COLOR blue]finished[/COLOR]'
+        item = xbmcgui.ListItem(label=name)
+        item.setProperty('channel-type', channel_type)
+        item.setProperty('channel-name', channel_name)
+        item.setProperty('tv-show-name', name)
+        if is_finished_shows:
+            item.setProperty('tv-show-finished', 'true')
+        else:
+            item.setProperty('tv-show-finished', 'false')
+        item.setProperty('tv-show-url', tv_show['url'])
+        tv_show_items.append(item)
+        if selected_tv_show_name == name:
+            modelMap['selected_tv_show_item'] = index
+        index = index + 1
+    return index
     
 def hide_tv_show_episodes(req_attrib, modelMap):
     return
