@@ -5,7 +5,7 @@
 		<posy>0</posy>
 	</coordinates>
 	<!-- <defaultcontrol always="false">102</defaultcontrol> -->
-	<backgroundcolor>0x002B2B2B</backgroundcolor>
+	<backgroundcolor>0xFF1F1F21</backgroundcolor>
 	<controls>
 			<control type="button" id="10">
 			      <posx>1240</posx>
@@ -185,10 +185,10 @@
 						<texture colordiffuse="0xFFC7C7CC">$INFO[ListItem.Icon]</texture>
 					</control>
 					<control type="image">
-						<posx>1</posx>
+						<posx>0</posx>
 						<posy>145</posy>
-						<width>168</width>
-						<height>100</height>
+						<width>170</width>
+						<height>145</height>
 						<aspectratio aligny="top">keep</aspectratio>
 						<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
 					</control>
@@ -197,21 +197,22 @@
 					<control type="image" id="1023">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>174</width>
-						<height>147</height>
+						<width>170</width>
+						<height>145</height>
 						<aspectratio>stretch</aspectratio>
 						<info>ListItem.Thumb</info>
 						<bordertexture border="5">button-focus3.png</bordertexture>
 						<bordersize>3</bordersize>
+						<animation effect="zoom" end="105" time="200">Focus</animation>
 					</control>
-					<control type="image">
+					<!-- <control type="image">
 						<posx>1</posx>
 						<posy>147</posy>
 						<width>172</width>
-						<height>100</height>
+						<height>145</height>
 						<aspectratio aligny="top">keep</aspectratio>
 						<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
-					</control>
+					</control> -->
 				</focusedlayout>
 			</control>
 		</control>
@@ -301,6 +302,7 @@
 				<texture background="true">list-slim-white.png</texture>
 			</control>
 			<control type="list" id="401">
+			<animation effect="slide" start="500,0" time="200">Focus</animation>
 				<posx>800</posx>
 				<posy>80</posy>
 				<width>450</width>
