@@ -1,3 +1,6 @@
+[B]Version 2.1.8[/B]
+- TV Show episodes list animation removed to fix mouse issue.
+
 [B]Version 2.1.7[/B]
 - Tweaked few UI looks to make it better just for fun.
 

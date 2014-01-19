@@ -302,7 +302,6 @@
 				<texture background="true">list-slim-white.png</texture>
 			</control>
 			<control type="list" id="401">
-			<animation effect="slide" start="500,0" time="200">Focus</animation>
 				<posx>800</posx>
 				<posy>80</posy>
 				<width>450</width>
@@ -683,7 +682,7 @@
 				<label>CHOOSE AN IMAGE TO ADD TV SHOW TO FAVORITES.</label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>0xFF2B2B2B</textcolor>
+				<textcolor>0xFFF7F7F7</textcolor>
 			</control>
 			<control type="image">
 				<posx>800</posx>
