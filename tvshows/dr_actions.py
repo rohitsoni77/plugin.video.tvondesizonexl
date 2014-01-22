@@ -403,13 +403,13 @@ def load_tv_show_episodes(req_attrib, modelMap):
     tv_show_name = req_attrib['tv-show-name']
     channel_type = req_attrib['channel-type']
     channel_name = req_attrib['channel-name']
-    logging.getLogger().debug('load tv show episodes...' + url)
     currentPage = 1
     
     if req_attrib.has_key('tv-show-page') and req_attrib['tv-show-page'] != '':
         currentPage = int(req_attrib['tv-show-page'])
         if currentPage != 1:
-            url = url + '&page=' + req_attrib['tv-show-page']
+            url = url + '/page' + req_attrib['tv-show-page']
+    logging.getLogger().debug('load tv show episodes...' + url)
     contentDiv = BeautifulSoup.SoupStrainer('div', {'id':'contentBody'})
     soup = HttpClient().get_beautiful_soup(url=url, parseOnlyThese=contentDiv)
     
@@ -717,10 +717,10 @@ def __preparePlayListItem__(video_source_id, video_source_img, video_source_name
 def __prepareVideoLink__(video_link):
     video_url = video_link['videoLink']
     new_video_url = None
-    video_id = re.compile('(id|url|v)=(.+?)/').findall(video_url + '/')[0][1]
+    video_id = re.compile('(id|url|v|si)=(.+?)/').findall(video_url + '/')[0][1]
     if re.search('dm(\d*).php', video_url, flags=re.I):
         new_video_url = 'http://www.dailymotion.com/video/' + video_id + '_'
-    elif re.search('(flash.php|fp.php|wire.php)', video_url, flags=re.I):
+    elif re.search('(flash.php|fp.php|wire.php|desiserials.tv)', video_url, flags=re.I):
         new_video_url = 'http://cdn.playwire.com/v2/12376/config/' + video_id + '.json'
     elif re.search('(youtube|u|yt)(\d*).php', video_url, flags=re.I):
         new_video_url = 'http://www.youtube.com/watch?v=' + video_id + '&'

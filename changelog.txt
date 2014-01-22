@@ -1,3 +1,7 @@
+[B]Version 2.1.9[/B]
+- Fix for newly added video link desiserials.tv.
+- Fix for desirulez.net TV episodes pagination.
+
 [B]Version 2.1.8[/B]
 - TV Show episodes list animation removed to fix mouse issue.
 
