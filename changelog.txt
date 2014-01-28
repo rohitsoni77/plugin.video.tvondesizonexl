@@ -1,3 +1,6 @@
+[B]Version 2.2.2[/B]
+- Added Movies channel.
+
 [B]Version 2.2.1[/B]
 - Added Awards & Concerts channel.
 

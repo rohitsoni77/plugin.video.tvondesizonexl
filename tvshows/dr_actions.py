@@ -34,7 +34,10 @@ import xbmcgui, xbmc  # @UnresolvedImport
 
 DIRECT_CHANNELS = {"Awards & Concerts":{"iconimage":"Awards.jpg",
                    "channelType": "IND",
-                   "tvshow_episodes_url": "/forums/36-Awards-Performances-Concerts"}}
+                   "tvshow_episodes_url": "/forums/36-Awards-Performances-Concerts"},
+                   "Latest & Exclusive Movies":{"iconimage":"Movies.jpeg",
+                   "channelType": "IND",
+                   "tvshow_episodes_url": "/forums/20-Latest-Exclusive-Movie-HQ"}}
 
 BASE_WSITE_URL = base64.b64decode('aHR0cDovL3d3dy5kZXNpcnVsZXoubmV0')
     
