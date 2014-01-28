@@ -36,6 +36,7 @@ def show_refresh_view(modelMap, window):
         window.getControl(600).setVisible(False)
         window.getControl(800).setVisible(False)
         window.getControl(900).setVisible(False)
+        window.getControl(1000).setVisible(False)
         
         window.getControl(201).setVisible(True)
         window.getControl(202).setVisible(True)
@@ -60,6 +61,7 @@ def show_channels_view(modelMap, window):
     window.getControl(500).setVisible(False)
     window.getControl(600).setVisible(False)
     window.getControl(800).setVisible(False)
+    window.getControl(1000).setVisible(False)
     window.getControl(105).reset()
     window.getControl(106).setVisible(False)
     if modelMap.has_key('favorite_tv_shows_items') and modelMap['favorite_tv_shows_items'] is not None and len(modelMap['favorite_tv_shows_items']) > 0:
@@ -82,6 +84,7 @@ def show_tv_shows_view(modelMap, window):
     window.getControl(800).setVisible(False)
     window.getControl(900).setVisible(False)
     window.getControl(100).setVisible(False)
+    window.getControl(1000).setVisible(False)
     window.getControl(300).setVisible(True)
     window.getControl(305).setEnabled(True)
     logging.getLogger().debug('total tv shows: %s' % str(len(modelMap['tv_show_items'])))
@@ -119,7 +122,38 @@ def show_tv_show_episodes_view(modelMap, window):
         window.getControl(500).setVisible(False)
         window.getControl(600).setVisible(False)
         window.setFocusId(401)
-    
+        
+def show_tv_channel_episodes_loading_view(modelMap, window):
+    window.getControl(500).setVisible(True)
+    window.getControl(501).setLabel('LOADING CONTENT FOR [B]' + modelMap['channel_name'] + '[/B]...')
+        
+def show_tv_channel_episodes_view(modelMap, window):
+    window.getControl(200).setVisible(False)
+    window.getControl(300).setVisible(False)
+    window.getControl(400).setVisible(False)
+    window.getControl(600).setVisible(False)
+    window.getControl(800).setVisible(False)
+    window.getControl(900).setVisible(False)
+    window.getControl(100).setVisible(False)
+    window.getControl(1001).setLabel(modelMap['channel_name'])
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=modelMap['channel_image'], aspectRatio=0, colorDiffuse='0xFFF7F7F7')
+    window.addControl(image)
+    CacheManager().put('channel_image', modelMap['channel_image'])
+    controls = CacheManager().get('controls_to_be_deleted')
+    controls.append(image)
+    if modelMap.has_key('error-occurred') and modelMap['error-occurred']:
+        logging.getLogger().debug('found an error message...')
+        window.getControl(500).setVisible(False)
+        window.getControl(600).setVisible(True)
+        logging.getLogger().exception(modelMap['error'])
+    else:
+        logging.getLogger().debug('total tv show episodes: %s' % str(len(modelMap['tv_show_episode_items'])))
+        window.getControl(1002).reset()
+        window.getControl(1002).addItems(modelMap['tv_show_episode_items'])
+        window.getControl(1000).setVisible(True)
+        window.getControl(500).setVisible(False)
+        window.getControl(600).setVisible(False)
+        window.setFocusId(1002)
     
 def show_tv_show_episode_videos_list_view(modelMap, window):
     image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
@@ -131,6 +165,25 @@ def show_tv_show_episode_videos_list_view(modelMap, window):
     window.getControl(400).setVisible(False)
     window.getControl(500).setVisible(False)
     window.getControl(600).setVisible(False)
+    
+    window.getControl(804).reset()
+    logging.getLogger().debug('Channel name in show_tv_show_episode_videos_list_view = %s' % modelMap['channel-name'])
+    window.getControl(801).setLabel(modelMap['channel-name'])
+    window.getControl(802).setLabel(modelMap['tv-show-name'])
+    window.getControl(803).setLabel(modelMap['episode-name'])
+    window.getControl(804).addItems(modelMap['videos-item-list'])
+    window.getControl(800).setVisible(True)
+    window.setFocusId(804)
+    
+    
+def show_tv_channel_episode_videos_list_view(modelMap, window):
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
+    window.addControl(image)
+    controls = CacheManager().get('controls_to_be_deleted')
+    controls.append(image)
+    window.getControl(500).setVisible(False)
+    window.getControl(600).setVisible(False)
+    window.getControl(1000).setVisible(False)
     
     window.getControl(804).reset()
     logging.getLogger().debug('Channel name in show_tv_show_episode_videos_list_view = %s' % modelMap['channel-name'])
@@ -227,6 +280,17 @@ def hide_tv_show_episode_videos_list_view(modelMap, window):
     window.getControl(500).setVisible(False)
     window.setFocusId(305)
     
+def hide_tv_channel_episode_videos_list_view(modelMap, window):
+    image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
+    window.addControl(image)
+    controls = CacheManager().get('controls_to_be_deleted')
+    controls.append(image)
+    window.getControl(800).setVisible(False)
+    window.getControl(1000).setVisible(True)
+    window.getControl(600).setVisible(False)
+    window.getControl(500).setVisible(False)
+    window.setFocusId(1002)
+    
     
 def show_tv_show_episode_videos_view(modelMap, window):
     image = xbmcgui.ControlImage(30, 30, 174, 147, filename=CacheManager().get('channel_image'), aspectRatio=0, colorDiffuse='0xFFF7F7F7')
@@ -280,6 +344,7 @@ def handle_channel_selected(window, control_id):
     if item is not None:
         logging.getLogger().debug('handle channel selected : %s ' % item.getProperty('channel-name'))
         req_attrib_map['channel-name'] = item.getProperty('channel-name')
+        req_attrib_map['direct-link'] = item.getProperty('direct-link')
     return req_attrib_map
 
 def handle_favorite_tv_show_selected(window, control_id):

@@ -32,6 +32,11 @@ import re
 import time
 import xbmcgui, xbmc  # @UnresolvedImport
 
+DIRECT_CHANNELS = {"Awards & Concerts":{"iconimage":"Awards.jpg",
+                   "channelType": "IND",
+                   "tvshow_episodes_url": "/forums/36-Awards-Performances-Concerts"}}
+
+BASE_WSITE_URL = base64.b64decode('aHR0cDovL3d3dy5kZXNpcnVsZXoubmV0')
     
 def check_cache(req_attrib, modelMap):
     logging.getLogger().debug('Check cache ***********************')
@@ -238,6 +243,14 @@ def load_channels(req_attrib, modelMap):
     
     display_channel_type = int(AddonContext().get_addon().getSetting('drChannelType'))
     
+    for channel_name in DIRECT_CHANNELS:
+        channel_obj = DIRECT_CHANNELS[channel_name]
+        if((display_channel_type == 1 and channel_obj['channelType'] == CHANNEL_TYPE_IND)  or (display_channel_type == 0)):
+            item = xbmcgui.ListItem(label=channel_name, iconImage=channel_obj['iconimage'], thumbnailImage=channel_obj['iconimage'])
+            item.setProperty('channel-name', channel_name)
+            item.setProperty('direct-link', 'true')
+            tv_channel_items.append(item)
+    
     for channel_name in tv_channels:
         channel_obj = tv_channels[channel_name]
         if ((display_channel_type == 1 and channel_obj['channelType'] == CHANNEL_TYPE_IND) 
@@ -246,6 +259,7 @@ def load_channels(req_attrib, modelMap):
             
             item = xbmcgui.ListItem(label=channel_name, iconImage=channel_obj['iconimage'], thumbnailImage=channel_obj['iconimage'])
             item.setProperty('channel-name', channel_name)
+            item.setProperty('direct-link', 'false')
             tv_channel_items.append(item)
      
     modelMap['tv_channel_items'] = tv_channel_items
@@ -271,9 +285,14 @@ def load_favorite_tv_shows(req_attrib, modelMap):
         
     modelMap['favorite_tv_shows_items'] = favorite_tv_shows_items
     
+def determine_direct_tv_channel(req_attrib, modelMap):
+    if(req_attrib['direct-link'] == 'true'):
+        logging.getLogger().debug('found direct channel redirect...')
+        return 'redirect:dr-displayDirectChannelEpisodesList'
 
 def load_tv_shows(req_attrib, modelMap):
     logging.getLogger().debug('load tv shows...')
+    
     tv_channels = CacheManager().get('tv_data')['channels']
     channel_name = req_attrib['channel-name']
     tv_channel = tv_channels[channel_name]
@@ -299,6 +318,16 @@ def load_tv_shows(req_attrib, modelMap):
         
     modelMap['tv_show_items'] = tv_show_items
     
+def load_direct_link_channel(req_attrib, modelMap):
+    channel_name = req_attrib['channel-name']
+    tv_channel = DIRECT_CHANNELS[channel_name]
+    
+    modelMap['channel_image'] = tv_channel['iconimage']
+    modelMap['channel_name'] = channel_name
+    
+    req_attrib['tv-show-url'] = BASE_WSITE_URL + tv_channel['tvshow_episodes_url']
+    req_attrib['tv-show-name'] = ''
+    req_attrib['channel-type'] = tv_channel['channelType']
     
 def _prepare_tv_show_items_(tv_shows, channel_type, channel_name, selected_tv_show_name, tv_show_items, is_finished_shows, modelMap, index):
     for tv_show in tv_shows:
@@ -319,14 +348,8 @@ def _prepare_tv_show_items_(tv_shows, channel_type, channel_name, selected_tv_sh
             modelMap['selected_tv_show_item'] = index
         index = index + 1
     return index
-    
-def hide_tv_show_episodes(req_attrib, modelMap):
-    return
 
-def hide_tv_show_episode_videos_list(req_attrib, modelMap):
-    return
-
-def hide_tv_show_options(req_attrib, modelMap):
+def empty_function(req_attrib, modelMap):
     return
 
 def add_tv_show_favorite(req_attrib, modelMap):
@@ -358,9 +381,7 @@ def load_remove_tv_show_favorite(req_attrib, modelMap):
     modelMap['tv-show-name'] = req_attrib['tv-show-name']
     modelMap['tv-show-thumb'] = req_attrib['tv-show-thumb']
     logging.getLogger().debug('display remove tv show favorite...')
-    
-def hide_remove_favorite(req_attrib, modelMap):
-    logging.getLogger().debug('hide remove tv show favorite...')
+
     
 def remove_favorite(req_attrib, modelMap):
     logging.getLogger().debug('remove tv show favorite...')
@@ -586,7 +607,6 @@ def _write_favorite_tv_shows_cache_(filepath, data):
     CacheManager().put('tv_favorites', data)
     jsonfile.write_file(filepath, data)
 
-BASE_WSITE_URL = base64.b64decode('aHR0cDovL3d3dy5kZXNpcnVsZXoubmV0')
 
 def __retrieve_tv_shows__(tv_channel_url):
     tv_shows = []
