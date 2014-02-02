@@ -37,6 +37,7 @@ def show_refresh_view(modelMap, window):
         window.getControl(800).setVisible(False)
         window.getControl(900).setVisible(False)
         window.getControl(1000).setVisible(False)
+        window.getControl(1100).setVisible(False)
         
         window.getControl(201).setVisible(True)
         window.getControl(202).setVisible(True)
@@ -62,6 +63,7 @@ def show_channels_view(modelMap, window):
     window.getControl(600).setVisible(False)
     window.getControl(800).setVisible(False)
     window.getControl(1000).setVisible(False)
+    window.getControl(1100).setVisible(False)
     window.getControl(105).reset()
     window.getControl(106).setVisible(False)
     if modelMap.has_key('favorite_tv_shows_items') and modelMap['favorite_tv_shows_items'] is not None and len(modelMap['favorite_tv_shows_items']) > 0:
@@ -85,6 +87,7 @@ def show_tv_shows_view(modelMap, window):
     window.getControl(900).setVisible(False)
     window.getControl(100).setVisible(False)
     window.getControl(1000).setVisible(False)
+    window.getControl(1100).setVisible(False)
     window.getControl(300).setVisible(True)
     window.getControl(305).setEnabled(True)
     logging.getLogger().debug('total tv shows: %s' % str(len(modelMap['tv_show_items'])))

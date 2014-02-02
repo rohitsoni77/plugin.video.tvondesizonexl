@@ -52,6 +52,9 @@ def handle_init(window, control_id):
     window.getControl(700).setVisible(False)
     window.getControl(800).setVisible(False)
     window.getControl(900).setVisible(False)
+    window.getControl(1000).setVisible(False)
+    window.getControl(1100).setVisible(True)
+    window.setFocusId(1100)
     displayBackControl = AddonContext().get_addon().getSetting('displayBackControl')
     if displayBackControl is not None and displayBackControl == 'true':
         window.getControl(10).setVisible(True)

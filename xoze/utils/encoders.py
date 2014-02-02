@@ -59,7 +59,7 @@ def baseNencode(number, N):
 def baseNdecode(number, N):
     return int(number, N)     
 
-##Following set of operations are used for ENK decoding.
+# #Following set of operations are used for ENK decoding.
 
 def _enk_dec_num(kode, enc):
     if re.search('fromCharCode', enc):
@@ -71,13 +71,27 @@ def _enk_dec_num(kode, enc):
         return None
     
 def _enk_dec_swap(kode, enc):
-    if re.search('charAt', enc):
+    if re.search('charAt', enc) and not re.search('@', enc):
         x = ''
         i = 0
         while i < (len(kode) - 1):
             x += (kode[i + 1] + kode[i])
             i += 2
         return (x + (kode[len(kode) - 1] if i < len(kode) else ''))
+    else:
+        return None
+
+def _enk_dec_skip(kode, enc):
+    if re.search('charAt', enc) and re.search('@', enc):
+        x = ''
+        i = 0
+        while i < len(kode):
+            if(kode[i] == '|' and kode[i + 1] == '|'):
+                x += '@'
+            else:
+                x += kode[i]
+            i += 2
+        return x
     else:
         return None
     
@@ -87,7 +101,7 @@ def _enk_dec_reverse(kode, enc):
     else:
         return None
     
-ENK_DEC_FUNC = [_enk_dec_num, _enk_dec_swap, _enk_dec_reverse]
+ENK_DEC_FUNC = [_enk_dec_num, _enk_dec_skip, _enk_dec_swap, _enk_dec_reverse]
 
 
 def enk_dekode(html):

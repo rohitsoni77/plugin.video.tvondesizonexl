@@ -79,13 +79,22 @@
 	<snapper module="xoze.snapvideo.Movshare" function="retrieveVideoInfo"
 		enabled="true" desc="www.movshare.net video hosting website">
 		<video-id regex="movshare.net/embed.php\?v=(.+?)&amp;" />
+		<video-id regex="movshare.net/embed.php\?[a-zA-Z0-9&amp;=_]*&amp;v=(.+?)&amp;" />
 		<video-id regex="movshare.net/video/(.+?)&amp;" />
 	</snapper>
 
 	<snapper module="xoze.snapvideo.Novamov" function="retrieveVideoInfo"
 		enabled="true" desc="www.novamov.com video hosting website">
 		<video-id regex="novamov.com/embed.php\?v=(.+?)&amp;" />
+		<video-id regex="novamov.net/embed.php\?[a-zA-Z0-9&amp;=_]*&amp;v=(.+?)&amp;" />
 		<video-id regex="novamov.com/video/(.+?)&amp;" />
+	</snapper>
+	
+	<snapper module="xoze.snapvideo.Nowvideo" function="retrieveVideoInfo"
+		enabled="true" desc="www.nowvideo.ch video hosting website">
+		<video-id regex="nowvideo.ch/embed.php\?v=(.+?)&amp;" />
+		<video-id regex="nowvideo.ch/embed.php\?[a-zA-Z0-9&amp;=_]*&amp;v=(.+?)&amp;" />
+		<video-id regex="nowvideo.ch/video/(.+?)&amp;" />
 	</snapper>
 
 	<snapper module="xoze.snapvideo.DivXStage" function="retrieveVideoInfo"
@@ -128,8 +137,8 @@
 
 	<snapper module="xoze.snapvideo.HostingCup" function="retrieveVideoInfo"
 		enabled="true" desc="www.hostingcup.com video hosting website">
-		<video-id regex="hostingcup.com/embed-(.+?)\.html" />
 		<video-id regex="hostingcup.com/embed-(.+?)-" />
+		<video-id regex="hostingcup.com/embed-(.+?)\.html" />
 		<video-id regex="hostingcup.com/(.+?)/" />
 		<video-id regex="hostingcup.com/(.+?)&amp;" />
 		<video-id regex="vidpe.com/embed-(.+?)\.html" />
@@ -140,10 +149,19 @@
 
 	<snapper module="xoze.snapvideo.HostingBulk" function="retrieveVideoInfo"
 		enabled="true" desc="www.hostingbulk.com video hosting website">
-		<video-id regex="hostingbulk.com/embed-(.+?)\.html" />
 		<video-id regex="hostingbulk.com/embed-(.+?)-" />
+		<video-id regex="hostingbulk.com/embed-(.+?)\.html" />
+		<video-id regex="hostingbulk.com/embed/(.+?)&amp;" />
 		<video-id regex="hostingbulk.com/(.+?)/" />
 		<video-id regex="hostingbulk.com/(.+?)&amp;" />
+	</snapper>
+	
+	<snapper module="xoze.snapvideo.Movzap" function="retrieveVideoInfo"
+		enabled="true" desc="www.movzap.com video hosting website">
+		<video-id regex="movzap.com/embed-(.+?)-" />
+		<video-id regex="movzap.com/embed/(.+?)&amp;" />
+		<video-id regex="movzap.com/(.+?)/" />
+		<video-id regex="movzap.com/(.+?)&amp;" />
 	</snapper>
 
 	<snapper module="xoze.snapvideo.Vimeo" function="retrieveVideoInfo"
@@ -252,6 +270,14 @@
         <video-id regex="tune.pk/video/(.+?)/" />
     </snapper>
 
+    <snapper function="retrieveVideoInfo" enabled="true" module="xoze.snapvideo.VideoPress">
+    	<video-id regex="videos.videopress.com/(.+?).mp4"/>
+    </snapper>
+    
+    <snapper function="retrieveVideoInfo" enabled="true" module="xoze.snapvideo.PlayCineFlix">
+    	<video-id regex="playcineflix.com/(.+?).mp4"/>
+    </snapper>
+    
 	<!-- The following snapper should be at the end of all srcappers -->
 	<snapper module="xoze.snapvideo.UrlResolverDelegator" function="retrieveVideoInfo"
 		enabled="true"

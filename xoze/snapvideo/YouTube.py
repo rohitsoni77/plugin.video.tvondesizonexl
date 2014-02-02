@@ -12,6 +12,7 @@ import urllib
 import xbmcgui  # @UnresolvedImport
 
 VIDEO_HOSTING_NAME = 'YouTube'
+STREAMS_QUAL_MAP = {STREAM_QUAL_LOW:[18, 34, 43, 5, 17, 100], STREAM_QUAL_SD:[35, 44, 101], STREAM_QUAL_HD_720:[22, 45, 120, 38, 84, 102], STREAM_QUAL_HD_1080:[37, 121]}
 
 def getVideoHost():
     video_host = VideoHost()
@@ -81,6 +82,7 @@ def retrieveVideoInfo(video_id):
         stream_map = urllib.unquote_plus(stream_map)
         logging.getLogger().debug(stream_map)
         formatArray = stream_map.split(',')
+        streams = {}
         for formatContent in formatArray:
             if formatContent == '':
                 continue
@@ -115,57 +117,18 @@ def retrieveVideoInfo(video_id):
                             formatUrl += "&signature=" + parseSignature(sig[0])
         
             qual = formatQual
-            url = http.HttpClient().add_http_cookies_to_url(formatUrl, extraExtraHeaders={'Referer':'https://www.youtube.com/watch?v=' + video_id})
-            logging.getLogger().debug('quality ---> ' + qual)
-            if(qual == '52' or qual == '60'):  # Incorrect stream should be skipped. Causes Svere Crash
-                dialog = xbmcgui.Dialog()
-                dialog.ok('XBMC Unsupported codec skipped', 'YouTube has started new stream is currently cannot be decoded by XBMC player, causes crash.', 'Skipped this video quality.')
-                continue
-            if(qual == '13' and video_info.get_stream_link(STREAM_QUAL_LOW) is None):  # 176x144
-                video_info.add_stream_link(STREAM_QUAL_LOW, url)
-            elif(qual == '5' and video_info.get_stream_link(STREAM_QUAL_LOW) is None):  # 400\\327226 AUDIO ONLY
-                video_info.add_stream_link(STREAM_QUAL_LOW, url)
-            elif(qual == '6' and video_info.get_stream_link(STREAM_QUAL_LOW) is None):  # 640\\327360 AUDIO ONLY
-                video_info.add_stream_link(STREAM_QUAL_LOW, url)
-            elif(qual == '17'):  # 176x144
-                video_info.add_stream_link(STREAM_QUAL_LOW, url)
-            elif(qual == '18'):  # 270p/360p MP4
-                video_info.add_stream_link(STREAM_QUAL_LOW, url)
-            elif(qual == '22'):  # 1280x720 MP4
-                video_info.add_stream_link(STREAM_QUAL_HD_720, url)
-            elif(qual == '34'):  # 480x360 FLV
-                video_info.add_stream_link(STREAM_QUAL_SD, url)
-            elif(qual == '35' and video_info.get_stream_link(STREAM_QUAL_SD) is None):  # 854\\327480 SD
-                video_info.add_stream_link(STREAM_QUAL_SD, url)
-            elif(qual == '36' and video_info.get_stream_link(STREAM_QUAL_LOW) is None):  # 320x240
-                video_info.add_stream_link(STREAM_QUAL_LOW, url)
-            elif(qual == '37'):  # 1920x1080 MP4
-                video_info.add_stream_link(STREAM_QUAL_HD_1080, url)
-            elif(qual == '38' and video_info.get_stream_link(STREAM_QUAL_HD_1080) is None):  # 4096\\3272304 EPIC MP4
-                video_info.add_stream_link(STREAM_QUAL_HD_1080, url)
-            elif(qual == '43' and video_info.get_stream_link(STREAM_QUAL_LOW) is None):  # 360 WEBM
-                video_info.add_stream_link(STREAM_QUAL_LOW, url)
-            elif(qual == '44' and video_info.get_stream_link(STREAM_QUAL_SD) is None):  # 480 WEBM
-                video_info.add_stream_link(STREAM_QUAL_SD, url)
-            elif(qual == '45' and video_info.get_stream_link(STREAM_QUAL_HD_720) is None):  # 720 WEBM
-                video_info.add_stream_link(STREAM_QUAL_HD_720, url)
-            elif(qual == '46' and video_info.get_stream_link(STREAM_QUAL_HD_1080) is None):  # 1080 WEBM
-                video_info.add_stream_link(STREAM_QUAL_HD_1080, url)
-            elif(qual == '120'):  # New video qual
-                video_info.add_stream_link(STREAM_QUAL_HD_720, url)
-                # 3D streams - MP4
-                # 240p -> 83
-                # 360p -> 82
-                # 520p -> 85
-                # 720p -> 84
-                # 3D streams - WebM
-                # 360p -> 100
-                # 360p -> 101
-                # 720p -> 102
-            elif video_info.get_stream_link(STREAM_QUAL_LOW) is None:  # unknown quality
-                video_info.add_stream_link(STREAM_QUAL_LOW, url)
-
-            video_info.set_stopped(False)
+            url = http.HttpClient().add_http_cookies_to_url(formatUrl, addHeaders=False,addCookies=False, extraExtraHeaders={'Referer':'https://www.youtube.com/watch?v=' + video_id})
+            streams[int(qual)] = url
+            
+        
+        logging.getLogger().debug(streams)
+        for qual in STREAMS_QUAL_MAP:
+            for key in STREAMS_QUAL_MAP[qual]:
+                if streams.has_key(key):
+                    url = streams[key]
+                    video_info.add_stream_link(qual, url)
+                    break
+        video_info.set_stopped(False)
     except Exception, e:
         logging.getLogger().error(e)
         video_info.set_stopped(True)
@@ -178,50 +141,41 @@ def swap(a , b):
     a[b] = c
     return a
 
-def parseSignature(sig):
-    if len(sig) == 88:   
-        sigA = list(sig)
-        sigA = sigA[2:]
-        sigA = swap(sigA, 1)
-        sigA = swap(sigA, 10)
-        sigA = list(reversed(sigA))
-        sigA = sigA[2:]
-        sigA = swap(sigA, 23)
-        sigA = sigA[3:]
-        sigA = swap(sigA, 15)
-        sigA = swap(sigA, 34)
-        sig = ''.join(sigA)
-        return sig
-    elif (len(sig) == 87):
-        sigA = ''.join(list(reversed(list(sig[44: 84]))))
-        sigB = ''.join(list(reversed(list(sig[3: 43]))))
-        sig = sigA[21:22] + sigA[1:21] + sigA[0:1] + sigA[22:31] + sig[0:1] + sigA[32:40] + sig[43:44] + sigB
-        return sig
-    elif (len(sig) == 86):
-        sig = sig[2:17] + sig[0:1] + sig[18:41] + sig[79:80] + sig[42:43] + sig[43:79] + sig[82:83] + sig[80:82] + sig[41:42]
-        return sig
-    elif (len(sig) == 85):
-        sigA = ''.join(list(reversed(list(sig[44:84]))))
-        sigB = ''.join(list(reversed(list(sig[3:43]))))
-        sig = sigA[7:8] + sigA[1:7] + sigA[0:1] + sigA[8:23] + sig[0:1] + sigA[24:33] + sig[1:2] + sigA[34:40] + sig[43:44] + sigB
-        return sig   
-    elif (len(sig) == 84):
-        sigA = ''.join(list(reversed(list(sig[44:84]))))
-        sigB = ''.join(list(reversed(list(sig[3:43]))))
-        sig = sigA + sig[43:44] + sigB[0:6] + sig[2:3] + sigB[7:16] + sigB[39:40] + sigB[17:39] + sigB[16:17]
-        return sig                         
-    elif (len(sig) == 83):
-        sigA = ''.join(list(reversed(list(sig[43:83]))))
-        sigB = ''.join(list(reversed(list(sig[2:42]))))
-        sig = sigA[30:31] + sigA[1:27] + sigB[39:40] + sigA[28:30] + sigA[0:1] + sigA[31:40] + sig[42:43] + sigB[0:5] + sigA[27:28] + sigB[6:39] + sigB[5:6]
-        return sig        
-    elif (len(sig) == 82):
-        sigA = ''.join(list(reversed(list(sig[34:82]))))
-        sigB = ''.join(list(reversed(list(sig[0:33]))))
-        sig = sigA[45:46] + sigA[2:14] + sigA[0:1] + sigA[15:41] + sig[33:34] + sigA[42:43] + sigA[43:44] + sigA[44:45] + sigA[41:42] + sigA[46:47] + sigB[32:33] + sigA[14:15] + sigB[0:32] + sigA[47:48]
-        return sig
+def parseSignature(s):
+    ''' use decryption solution by Youtube-DL project '''
+    if len(s) == 93:
+        return s[86:29:-1] + s[88] + s[28:5:-1]
+    elif len(s) == 92:
+        return s[25] + s[3:25] + s[0] + s[26:42] + s[79] + s[43:79] + s[91] + s[80:83]
+    elif len(s) == 91:
+        return s[84:27:-1] + s[86] + s[26:5:-1]
+    elif len(s) == 90:
+        return s[25] + s[3:25] + s[2] + s[26:40] + s[77] + s[41:77] + s[89] + s[78:81]
+    elif len(s) == 89:
+        return s[84:78:-1] + s[87] + s[77:60:-1] + s[0] + s[59:3:-1]
+    elif len(s) == 88:
+        return s[7:28] + s[87] + s[29:45] + s[55] + s[46:55] + s[2] + s[56:87] + s[28]
+    elif len(s) == 87:
+        return s[6:27] + s[4] + s[28:39] + s[27] + s[40:59] + s[2] + s[60:]
+    elif len(s) == 86:
+        return s[80:72:-1] + s[16] + s[71:39:-1] + s[72] + s[38:16:-1] + s[82] + s[15::-1]
+    elif len(s) == 85:
+        return s[3:11] + s[0] + s[12:55] + s[84] + s[56:84]
+    elif len(s) == 84:
+        return s[78:70:-1] + s[14] + s[69:37:-1] + s[70] + s[36:14:-1] + s[80] + s[:14][::-1]
+    elif len(s) == 83:
+        return s[80:63:-1] + s[0] + s[62:0:-1] + s[63]
+    elif len(s) == 82:
+        return s[80:37:-1] + s[7] + s[36:7:-1] + s[0] + s[6:0:-1] + s[37]
+    elif len(s) == 81:
+        return s[56] + s[79:56:-1] + s[41] + s[55:41:-1] + s[80] + s[40:34:-1] + s[0] + s[33:29:-1] + s[34] + s[28:9:-1] + s[29] + s[8:0:-1] + s[9]
+    elif len(s) == 80:
+        return s[1:19] + s[0] + s[20:68] + s[19] + s[69:80]
+    elif len(s) == 79:
+        return s[54] + s[77:54:-1] + s[39] + s[53:39:-1] + s[78] + s[38:34:-1] + s[0] + s[33:29:-1] + s[34] + s[28:9:-1] + s[29] + s[8:0:-1] + s[9]
     else:
-        return sig
+        logging.getLogger().fatal(u'Unable to decrypt signature, key length %d not supported; retrying might work' % (len(s)))
+        return s
 
 def retrievePlaylistVideoItems(playlistId):
     logging.getLogger().error('YouTube Playlist ID = ' + playlistId)

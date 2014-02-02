@@ -1,8 +1,24 @@
 '''
-Created on Dec 24, 2011
+Created on Feb 1, 2014
 
-@author: ajju
+@author: ajdeveloped@gmail.com
+
+This file is part of XOZE. 
+
+XOZE is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+XOZE is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 '''
+
 from xoze.snapvideo import VideoHost, Video, STREAM_QUAL_SD
 from xoze.utils import http, encoders
 import logging
@@ -10,8 +26,8 @@ import re
 
 def getVideoHost():
     video_host = VideoHost()
-    video_host.set_icon('http://hostingbulk.com/images/logo.png')
-    video_host.set_name('HostingBulk')
+    video_host.set_icon('http://movzap.com/images/logo.png')
+    video_host.set_name('Movzap')
     return video_host
 
 def retrieveVideoInfo(video_id):
@@ -20,7 +36,7 @@ def retrieveVideoInfo(video_id):
     video.set_video_host(getVideoHost())
     video.set_id(video_id)
     try:
-        video_info_link = 'http://www.hostingbulk.com/' + str(video_id)
+        video_info_link = 'http://movzap.com/' + str(video_id)
         html = http.HttpClient().get_html_content(url=video_info_link)
         video_link = None
         paramSet = re.compile("return p\}\(\'(.+?)\',(\d\d),(\d\d),\'(.+?)\'").findall(html)

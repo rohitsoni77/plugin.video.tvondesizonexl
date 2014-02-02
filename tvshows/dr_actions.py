@@ -20,7 +20,8 @@ along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from xoze.context import AddonContext, SnapVideo
-from xoze.snapvideo import Dailymotion, Playwire, Putlocker, YouTube, Tune_pk
+from xoze.snapvideo import Dailymotion, Playwire, YouTube, Tune_pk, \
+    VideoWeed, Nowvideo, Novamov
 from xoze.utils import file, http, jsonfile
 from xoze.utils.cache import CacheManager
 from xoze.utils.http import HttpClient
@@ -740,38 +741,59 @@ def __preparePlayListItem__(video_source_id, video_source_img, video_source_name
 def __prepareVideoLink__(video_link):
     video_url = video_link['videoLink']
     new_video_url = None
-    video_id = re.compile('(id|url|v|si)=(.+?)/').findall(video_url + '/')[0][1]
-    if re.search('dm(\d*).php', video_url, flags=re.I):
-        new_video_url = 'http://www.dailymotion.com/video/' + video_id + '_'
-    elif re.search('(flash.php|fp.php|wire.php|desiserials.tv)', video_url, flags=re.I):
-        new_video_url = 'http://cdn.playwire.com/v2/12376/config/' + video_id + '.json'
-    elif re.search('(youtube|u|yt)(\d*).php', video_url, flags=re.I):
-        new_video_url = 'http://www.youtube.com/watch?v=' + video_id + '&'
-    elif re.search('mega.co.nz', video_url, flags=re.I):
-        new_video_url = video_url
-    elif re.search('put.php', video_url, flags=re.I):
-        new_video_url = 'http://www.putlocker.com/file/' + video_id
-    elif re.search('(weed.php|vw.php)', video_url, flags=re.I):
-        new_video_url = 'http://www.videoweed.es/file/' + video_id
-    elif re.search('(sockshare.com|sock.com)', video_url, flags=re.I):
-        new_video_url = video_url
-    elif re.search('divxstage.php', video_url, flags=re.I):
-        new_video_url = 'divxstage.eu/video/' + video_id + '&'
-    elif re.search('(hostingbulk|hb).php', video_url, flags=re.I):
-        new_video_url = 'hostingbulk.com/' + video_id + '&'
-    elif re.search('movshare.php', video_url, flags=re.I):
-        new_video_url = 'movshare.net/video/' + video_id + '&'
-    elif re.search('nm.php', video_url, flags=re.I):
-        new_video_url = 'novamov.com/video/' + video_id + '&'
-    elif re.search('tune.php', video_url, flags=re.I):
-        new_video_url = 'tune.pk/play/' + video_id + '&'
+    if re.search('videos.desihome.info', video_url, flags=re.I):
+        new_video_url = __parseDesiHomeUrl__(video_url)
+    if new_video_url is None:
+        video_id = re.compile('(id|url|v|si)=(.+?)/').findall(video_url + '/')[0][1]
+        if re.search('dm(\d*).php', video_url, flags=re.I):
+            new_video_url = 'http://www.dailymotion.com/video/' + video_id + '_'
+        elif re.search('(flash.php|fp.php|wire.php|desiserials.tv)', video_url, flags=re.I):
+            new_video_url = 'http://cdn.playwire.com/v2/12376/config/' + video_id + '.json'
+        elif re.search('(youtube|u|yt)(\d*).php', video_url, flags=re.I):
+            new_video_url = 'http://www.youtube.com/watch?v=' + video_id + '&'
+        elif re.search('mega.co.nz', video_url, flags=re.I):
+            new_video_url = video_url
+        elif re.search('(put|pl).php', video_url, flags=re.I):
+            new_video_url = 'http://www.putlocker.com/file/' + video_id
+        elif re.search('(weed.php|vw.php)', video_url, flags=re.I):
+            new_video_url = 'http://www.videoweed.es/file/' + video_id
+        elif re.search('(sockshare.com|sock.com)', video_url, flags=re.I):
+            new_video_url = video_url
+        elif re.search('divxstage.php', video_url, flags=re.I):
+            new_video_url = 'divxstage.eu/video/' + video_id + '&'
+        elif re.search('(hostingbulk|hb).php', video_url, flags=re.I):
+            new_video_url = 'hostingbulk.com/' + video_id + '&'
+        elif re.search('(movshare|ms).php', video_url, flags=re.I):
+            new_video_url = 'movshare.net/video/' + video_id + '&'
+        elif re.search('mz.php', video_url, flags=re.I):
+            new_video_url = 'movzap.com/' + video_id + '&'
+        elif re.search('nv.php', video_url, flags=re.I):
+            new_video_url = 'nowvideo.ch/embed.php?v=' + video_id + '&'
+        elif re.search('nm.php', video_url, flags=re.I):
+            new_video_url = 'novamov.com/video/' + video_id + '&'
+        elif re.search('tune.php', video_url, flags=re.I):
+            new_video_url = 'tune.pk/play/' + video_id + '&'
         
     video_hosting_info = SnapVideo().findVideoHostingInfo(new_video_url)
     video_link['videoLink'] = new_video_url
     video_link['videoSourceImg'] = video_hosting_info.get_icon()
     video_link['videoSourceName'] = video_hosting_info.get_name()
 
-PREFERRED_DIRECT_PLAY_ORDER = [Dailymotion.VIDEO_HOSTING_NAME, Putlocker.VIDEO_HOSTING_NAME, Tune_pk.VIDEO_HOSTING_NAME, YouTube.VIDEO_HOSTING_NAME]
+
+def __parseDesiHomeUrl__(video_url):
+    video_link = None
+    logging.getLogger().debug('video_url = ' + video_url)
+    html = HttpClient().get_html_content(url=video_url)
+    if re.search('dailymotion.com', html, flags=re.I):
+        video_link = 'http://www.dailymotion.com/' + re.compile('dailymotion.com/(.+?)"').findall(html)[0] + '&'
+    elif re.search('hostingbulk.com', html, flags=re.I):
+        video_link = 'http://hostingbulk.com/' + re.compile('hostingbulk.com/(.+?)"').findall(html)[0] + '&'
+    elif re.search('movzap.com', html, flags=re.I):
+        video_link = 'http://movzap.com/' + re.compile('movzap.com/(.+?)"').findall(html)[0] + '&'
+    return video_link
+
+
+PREFERRED_DIRECT_PLAY_ORDER = [Dailymotion.VIDEO_HOSTING_NAME, Tune_pk.VIDEO_HOSTING_NAME, YouTube.VIDEO_HOSTING_NAME, Nowvideo.VIDEO_HOST_NAME, VideoWeed.VIDEO_HOST_NAME, Novamov.VIDEO_HOST_NAME]
 
 def __findPlayNowStream__(new_items):
 #     if AddonContext().get_addon().getSetting('autoplayback') == 'false':

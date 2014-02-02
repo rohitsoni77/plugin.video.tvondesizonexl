@@ -843,5 +843,25 @@
 				</focusedlayout>
 			</control>
 		</control>
+		
+		<control type="group" id="1100">
+			<control type="image">
+				<posx>544</posx>
+				<posy>264</posy>
+				<width>192</width>
+				<height>192</height>
+				<align>center</align>
+				<aspectratio aligny="top">keep</aspectratio>
+				<texture>icon.png</texture>
+			</control>
+			<control type="image">
+				<posx>544</posx>
+				<posy>456</posy>
+				<width>192</width>
+				<height>192</height>
+				<aspectratio aligny="top">keep</aspectratio>
+				<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">icon.png</texture>
+			</control>
+		</control>
 	</controls>
 </window>
