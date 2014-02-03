@@ -673,13 +673,20 @@ def _retrieve_video_links_(req_attrib, modelMap):
         soup = soup.findChild('div', recursive=False)
     prevChild = ''
     prevAFont = None
+    isHD = 'false'
     for child in soup.findChildren():
         if (child.name == 'img' or child.name == 'b' or (child.name == 'font' and not child.findChild('a'))):
             if (child.name == 'b' and prevChild == 'a') or (child.name == 'font' and child == prevAFont):
                 continue
             else:
                 if len(video_playlist_items) > 0:
-                    list_items.append(__preparePlayListItem__(video_source_id, video_source_img, video_source_name, video_playlist_items, modelMap))
+                    list_items.append(__preparePlayListItem__(video_source_id, video_source_img, video_source_name, video_playlist_items, modelMap, isHD))
+                
+                logging.getLogger().debug(child.getText())
+                if(re.search('720p', child.getText(), re.I)):
+                    isHD = 'true'
+                else:
+                    isHD = 'false'
                 if video_source_img is not None:
                     video_source_id = video_source_id + 1
                     video_source_img = None
@@ -724,14 +731,15 @@ def _retrieve_video_links_(req_attrib, modelMap):
                 prevAFont = None
         prevChild = child.name
     if len(video_playlist_items) > 0:
-        list_items.append(__preparePlayListItem__(video_source_id, video_source_img, video_source_name, video_playlist_items, modelMap))
+        list_items.append(__preparePlayListItem__(video_source_id, video_source_img, video_source_name, video_playlist_items, modelMap, isHD))
     return list_items
 
 
-def __preparePlayListItem__(video_source_id, video_source_img, video_source_name, video_playlist_items, modelMap):
+def __preparePlayListItem__(video_source_id, video_source_img, video_source_name, video_playlist_items, modelMap, isHD):
     item = xbmcgui.ListItem(label='[COLOR blue][B]Continuous Play[/B][/COLOR]' + ' | ' + 'Source #' + str(video_source_id) + ' | ' + 'Parts = ' + str(len(video_playlist_items)) , iconImage=video_source_img, thumbnailImage=video_source_img)
     item.setProperty('videoSourceName', video_source_name)
     item.setProperty('isContinuousPlayItem', 'true')
+    item.setProperty('isHD', isHD)
     item.setProperty('videoPlayListItemsKey', 'playlist#' + str(video_source_id))
     item.setProperty('videosList', pickle.dumps(video_playlist_items))
     modelMap['playlist#' + str(video_source_id)] = video_playlist_items
@@ -745,9 +753,9 @@ def __prepareVideoLink__(video_link):
         new_video_url = __parseDesiHomeUrl__(video_url)
     if new_video_url is None:
         video_id = re.compile('(id|url|v|si)=(.+?)/').findall(video_url + '/')[0][1]
-        if re.search('dm(\d*).php', video_url, flags=re.I):
+        if re.search('dm(\d*).php', video_url, flags=re.I) or (re.search('(desiserials|tellyserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and not video_id.isdigit()):
             new_video_url = 'http://www.dailymotion.com/video/' + video_id + '_'
-        elif re.search('(flash.php|fp.php|wire.php|desiserials.tv)', video_url, flags=re.I):
+        elif re.search('(flash.php|fp.php|wire.php)', video_url, flags=re.I) or (re.search('(desiserials|tellyserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and video_id.isdigit()):
             new_video_url = 'http://cdn.playwire.com/v2/12376/config/' + video_id + '.json'
         elif re.search('(youtube|u|yt)(\d*).php', video_url, flags=re.I):
             new_video_url = 'http://www.youtube.com/watch?v=' + video_id + '&'
@@ -801,6 +809,7 @@ def __findPlayNowStream__(new_items):
     logging.getLogger().debug('FINDING the source..')
     selectedIndex = None
     selectedSource = None
+    hdSelected = False
     backupSource = None
     backupSourceName = None
     for item in new_items:
@@ -809,12 +818,14 @@ def __findPlayNowStream__(new_items):
             try:
                 logging.getLogger().debug(source_name)
                 preference = PREFERRED_DIRECT_PLAY_ORDER.index(item.getProperty('videoSourceName'))
-                if preference == 0 and (selectedIndex is None or selectedIndex != 0) :
+                if preference == 0 and (selectedIndex is None or selectedIndex != 0) and not hdSelected :
                     selectedSource = item
                     selectedIndex = 0
                 elif selectedIndex is None or selectedIndex > preference:
                     selectedSource = item
                     selectedIndex = preference
+                if item.getProperty('isHD') == 'true' and selectedIndex is not None:
+                    hdSelected = True
             except ValueError:
                 logging.getLogger().debug("Exception for source : %s" % source_name)
                 if source_name == Playwire.VIDEO_HOSTING_NAME and (backupSource is None or backupSourceName != Playwire.VIDEO_HOSTING_NAME):
