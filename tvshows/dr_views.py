@@ -332,6 +332,12 @@ def play_video_streams(modelMap, window):
         logging.getLogger().debug('Playlist size = %s ' % str(playlist.size()))
         xbmc.Player().play(playlist)
     
+    
+def watch_live_channel(modelMap, window):
+    video_item = modelMap['live_item']
+    xbmc.Player().play(video_item.getProperty('streamLink'), video_item)
+    
+    
 def handle_select_event(window, control_id):
     try:
         logging.getLogger().debug(window.getFocus())
@@ -348,6 +354,7 @@ def handle_channel_selected(window, control_id):
         logging.getLogger().debug('handle channel selected : %s ' % item.getProperty('channel-name'))
         req_attrib_map['channel-name'] = item.getProperty('channel-name')
         req_attrib_map['direct-link'] = item.getProperty('direct-link')
+        req_attrib_map['live-link'] = item.getProperty('live-link')
     return req_attrib_map
 
 def handle_favorite_tv_show_selected(window, control_id):

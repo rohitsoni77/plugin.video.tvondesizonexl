@@ -40,6 +40,10 @@ DIRECT_CHANNELS = {"Awards & Concerts":{"iconimage":"Awards.jpg",
                    "channelType": "IND",
                    "tvshow_episodes_url": "/forums/20-Latest-Exclusive-Movie-HQ"}}
 
+LIVE_CHANNELS = {"EROSNOW.com":{"iconimage":"bajao.png",
+                   "channelType": "IND",
+                   "channelUrl": "http://livehls.erosnow.com/channel/1000001/manifest.m3u8"}}
+
 BASE_WSITE_URL = base64.b64decode('aHR0cDovL3d3dy5kZXNpcnVsZXoubmV0')
     
 def check_cache(req_attrib, modelMap):
@@ -247,12 +251,22 @@ def load_channels(req_attrib, modelMap):
     
     display_channel_type = int(AddonContext().get_addon().getSetting('drChannelType'))
     
+    for channel_name in LIVE_CHANNELS:
+        channel_obj = LIVE_CHANNELS[channel_name]
+        if((display_channel_type == 1 and channel_obj['channelType'] == CHANNEL_TYPE_IND)  or (display_channel_type == 0)):
+            item = xbmcgui.ListItem(label=channel_name, iconImage=channel_obj['iconimage'], thumbnailImage=channel_obj['iconimage'])
+            item.setProperty('channel-name', channel_name)
+            item.setProperty('live-link', 'true')
+            item.setProperty('direct-link', 'false')
+            tv_channel_items.append(item)
+    
     for channel_name in DIRECT_CHANNELS:
         channel_obj = DIRECT_CHANNELS[channel_name]
         if((display_channel_type == 1 and channel_obj['channelType'] == CHANNEL_TYPE_IND)  or (display_channel_type == 0)):
             item = xbmcgui.ListItem(label=channel_name, iconImage=channel_obj['iconimage'], thumbnailImage=channel_obj['iconimage'])
             item.setProperty('channel-name', channel_name)
             item.setProperty('direct-link', 'true')
+            item.setProperty('live-link', 'false')
             tv_channel_items.append(item)
     
     for channel_name in tv_channels:
@@ -264,6 +278,7 @@ def load_channels(req_attrib, modelMap):
             item = xbmcgui.ListItem(label=channel_name, iconImage=channel_obj['iconimage'], thumbnailImage=channel_obj['iconimage'])
             item.setProperty('channel-name', channel_name)
             item.setProperty('direct-link', 'false')
+            item.setProperty('live-link', 'false')
             tv_channel_items.append(item)
      
     modelMap['tv_channel_items'] = tv_channel_items
@@ -293,6 +308,12 @@ def determine_direct_tv_channel(req_attrib, modelMap):
     if(req_attrib['direct-link'] == 'true'):
         logging.getLogger().debug('found direct channel redirect...')
         return 'redirect:dr-displayDirectChannelEpisodesList'
+    
+def determine_live_tv_channel(req_attrib, modelMap):
+    if(req_attrib['live-link'] == 'true'):
+        logging.getLogger().debug('found live channel redirect...')
+        return 'redirect:dr-watchLiveChannel'
+    
 
 def load_tv_shows(req_attrib, modelMap):
     logging.getLogger().debug('load tv shows...')
@@ -332,6 +353,15 @@ def load_direct_link_channel(req_attrib, modelMap):
     req_attrib['tv-show-url'] = BASE_WSITE_URL + tv_channel['tvshow_episodes_url']
     req_attrib['tv-show-name'] = ''
     req_attrib['channel-type'] = tv_channel['channelType']
+    
+
+def watch_live(req_attrib, modelMap):
+    channel_name = req_attrib['channel-name']
+    tv_channel = LIVE_CHANNELS[channel_name]
+    item = xbmcgui.ListItem(label=channel_name, iconImage=tv_channel['iconimage'], thumbnailImage=tv_channel['iconimage'])
+    item.setProperty('streamLink', tv_channel['channelUrl'])
+    modelMap['live_item'] = item
+    
     
 def _prepare_tv_show_items_(tv_shows, channel_type, channel_name, selected_tv_show_name, tv_show_items, is_finished_shows, modelMap, index):
     for tv_show in tv_shows:

@@ -12,6 +12,7 @@
 	
 	<action id="dr-displayShowsList">
 		<move module="tvshows.dr_actions" function="determine_direct_tv_channel" />
+		<move module="tvshows.dr_actions" function="determine_live_tv_channel" />
 		<move module="tvshows.dr_actions" function="load_tv_shows" view-id="dr-tvShowsView" />
 	</action>
 	
@@ -96,6 +97,9 @@
 		<move module="tvshows.dr_actions" function="remove_favorite"  view-id="dr-channelsViewOthers"/>
 	</action>
 	
+	<action id="dr-watchLiveChannel">
+		<move module="tvshows.dr_actions" function="watch_live"  view-id="dr-liveChannelView"/>
+	</action>
 	
 	<view id="dr-channelsView" function="show_channels_view" module="tvshows.dr_views">
 		<event function="handle_channel_selected" module="tvshows.dr_views" action-id="dr-displayShowsList" control-id="102" intent="ACTION_MOUSE_LEFT_CLICK" />
@@ -125,6 +129,34 @@
 	</view>
 	
 	<view id="dr-channelsViewOthers" function="hide_remove_favorite" module="tvshows.dr_views">
+		<event function="handle_channel_selected" module="tvshows.dr_views" action-id="dr-displayShowsList" control-id="102" intent="ACTION_MOUSE_LEFT_CLICK" />
+		<event function="handle_channel_selected" module="tvshows.dr_views" action-id="dr-displayShowsList" control-id="102" intent="ACTION_SELECT_ITEM" />
+		<event function="handle_channel_selected" module="tvshows.dr_views" action-id="dr-displayShowsList" control-id="102" intent="ACTION_ENTER" />
+		<event function="handle_channel_selected" module="tvshows.dr_views" action-id="dr-displayShowsList" control-id="102" intent="ACTION_TOUCH_TAP" />
+		
+		<event function="handle_favorite_tv_show_selected" module="tvshows.dr_views" action-id="dr-displayFavoriteShowEpisodesList" control-id="105" intent="ACTION_MOUSE_LEFT_CLICK" />
+		<event function="handle_favorite_tv_show_selected" module="tvshows.dr_views" action-id="dr-displayFavoriteShowEpisodesList" control-id="105" intent="ACTION_SELECT_ITEM" />
+		<event function="handle_favorite_tv_show_selected" module="tvshows.dr_views" action-id="dr-displayFavoriteShowEpisodesList" control-id="105" intent="ACTION_ENTER" />
+		<event function="handle_favorite_tv_show_selected" module="tvshows.dr_views" action-id="dr-displayFavoriteShowEpisodesList" control-id="105" intent="ACTION_TOUCH_TAP" />
+		
+		<event action-id="dr-displayRemoveFavorite" function="handle_favorite_tv_show_selected_for_remove" module="tvshows.dr_views" control-id="105" intent="ACTION_MOUSE_RIGHT_CLICK" />
+		<event action-id="dr-displayRemoveFavorite" function="handle_favorite_tv_show_selected_for_remove" module="tvshows.dr_views" control-id="105" intent="ACTION_MOUSE_DOUBLE_CLICK" />
+		<event action-id="dr-displayRemoveFavorite" function="handle_favorite_tv_show_selected_for_remove" module="tvshows.dr_views" control-id="105" intent="ACTION_CONTEXT_MENU" />
+		<event action-id="dr-displayRemoveFavorite" function="handle_favorite_tv_show_selected_for_remove" module="tvshows.dr_views" control-id="105" intent="ACTION_TOUCH_LONGPRESS" />
+		
+		<event action-id="end" control-id="10" intent="ACTION_MOUSE_LEFT_CLICK" />
+		<event action-id="end" control-id="10" intent="ACTION_SELECT_ITEM" />
+		<event action-id="end" control-id="10" intent="ACTION_ENTER" />
+		<event action-id="end" control-id="10" intent="ACTION_TOUCH_TAP" />
+		
+		<event action-id="end" control-id="" intent="ACTION_PREVIOUS_MENU" />
+		<event action-id="end" control-id="" intent="ACTION_NAV_BACK" />
+		<event action-id="end" control-id="" intent="ACTION_PARENT_DIR" />
+		<event action-id="end" control-id="" intent="ACTION_TOUCH_TAP_TEN" />
+	</view>
+	
+	
+	<view id="dr-liveChannelView" function="watch_live_channel" module="tvshows.dr_views" >
 		<event function="handle_channel_selected" module="tvshows.dr_views" action-id="dr-displayShowsList" control-id="102" intent="ACTION_MOUSE_LEFT_CLICK" />
 		<event function="handle_channel_selected" module="tvshows.dr_views" action-id="dr-displayShowsList" control-id="102" intent="ACTION_SELECT_ITEM" />
 		<event function="handle_channel_selected" module="tvshows.dr_views" action-id="dr-displayShowsList" control-id="102" intent="ACTION_ENTER" />
