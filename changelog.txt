@@ -1,3 +1,6 @@
+[B]Version 2.2.6[/B]
+- Corrected favorites image resolution logic.
+
 [B]Version 2.2.5[/B]
 - Added Bajao from EROSNOW.com.
 

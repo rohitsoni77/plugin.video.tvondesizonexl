@@ -48,11 +48,14 @@ def parse_image(hsoup, tv_show_name, tv_show_url, channel_type, channel_name):
     for aTag in hsoup.findAll('a'):
         count = count + 1
         text = 'icon' + str(count)
-        params = http.parse_url_params(urllib.unquote(aTag['href']))
+        url = urllib.unquote(aTag['href'])
+        if url.find('?') > -1:
+            url = url.split('?')[1]
+        params = http.parse_url_params(url)
         if not params.has_key('imgurl'):
-            logging.getLogger().error(urllib.unquote(aTag['href']))
+            logging.getLogger().error(url)
             continue
-        print params['imgurl']
+        logging.getLogger().debug(params['imgurl'])
         item = xbmcgui.ListItem(label=text, iconImage=params['imgurl'], thumbnailImage=params['imgurl'])
         item.setProperty('channel-type', channel_type)
         item.setProperty('channel-name', channel_name)
