@@ -20,8 +20,8 @@ along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from xoze.context import AddonContext, SnapVideo
-from xoze.snapvideo import Dailymotion, Playwire, YouTube, Tune_pk, \
-    VideoWeed, Nowvideo, Novamov
+from xoze.snapvideo import Dailymotion, Playwire, YouTube, Tune_pk, VideoWeed, \
+    Nowvideo, Novamov
 from xoze.utils import file, http, jsonfile
 from xoze.utils.cache import CacheManager
 from xoze.utils.http import HttpClient
@@ -31,7 +31,7 @@ import logging
 import pickle
 import re
 import time
-import xbmcgui, xbmc  # @UnresolvedImport
+import xbmc, xbmcgui # @UnresolvedImport
 
 DIRECT_CHANNELS = {"Awards & Concerts":{"iconimage":"Awards.jpg",
                    "channelType": "IND",
@@ -41,8 +41,8 @@ DIRECT_CHANNELS = {"Awards & Concerts":{"iconimage":"Awards.jpg",
                    "tvshow_episodes_url": "/forums/20-Latest-Exclusive-Movie-HQ"}}
 
 LIVE_CHANNELS = {"EROSNOW.com":{"iconimage":"bajao.png",
-                   "channelType": "IND",
-                   "channelUrl": "http://livehls.erosnow.com/channel/1000001/manifest.m3u8"}}
+                 "channelType": "IND",
+                 "channelUrl": "http://livehls.erosnow.com/channel/1000001/manifest.m3u8"}}
 
 BASE_WSITE_URL = base64.b64decode('aHR0cDovL3d3dy5kZXNpcnVsZXoubmV0')
     
@@ -526,7 +526,15 @@ def __retrieveTVShowEpisodes__(threads, tv_show_name, channel_type, channel_name
         episodeName = aTag.getText()
         titleInfo = http.unescape(episodeName)
         titleInfo = titleInfo.replace(tv_show_name, '')
+        titleInfo = titleInfo.replace(' - Video Watch Online', '')
+        titleInfo = titleInfo.replace(' - Video Watch online', '')
+        titleInfo = titleInfo.replace('Video Watch Online', '')
+        titleInfo = titleInfo.replace('Video Watch online', '')
         titleInfo = titleInfo.replace('Watch Online', '')
+        titleInfo = titleInfo.replace('Watch online', '')
+        titleInfo = titleInfo.replace('Video', '')
+        titleInfo = titleInfo.replace('video', '')
+        titleInfo = titleInfo.replace('-', '')
         titleInfo = titleInfo.strip()
 #         movieInfo = re.compile("(.+?)\((\d+)\)").findall(titleInfo)
 #         if(len(movieInfo) >= 1 and len(movieInfo[0]) >= 2):

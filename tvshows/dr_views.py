@@ -21,6 +21,7 @@ along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 from xoze.utils.cache import CacheManager
 import logging
 import xbmcgui, xbmc  # @UnresolvedImport
+from xoze.utils import system
 
 def show_refresh_view(modelMap, window):
     logging.getLogger().debug('Refresh cache attribute: %s' % str(modelMap['refresh_cache']))
@@ -113,6 +114,7 @@ def show_tv_show_episodes_view(modelMap, window):
     if modelMap.has_key('error-occurred') and modelMap['error-occurred']:
         logging.getLogger().debug('found an error message...')
         window.getControl(500).setVisible(False)
+        system.hide_busy_dialog()
         window.getControl(600).setVisible(True)
         window.getControl(305).setEnabled(True)
         logging.getLogger().exception(modelMap['error'])
@@ -123,12 +125,14 @@ def show_tv_show_episodes_view(modelMap, window):
         window.getControl(401).addItems(modelMap['tv_show_episode_items'])
         window.getControl(400).setVisible(True)
         window.getControl(500).setVisible(False)
+        system.hide_busy_dialog()
         window.getControl(600).setVisible(False)
         window.setFocusId(401)
         
 def show_tv_channel_episodes_loading_view(modelMap, window):
-    window.getControl(500).setVisible(True)
-    window.getControl(501).setLabel('LOADING CONTENT FOR [B]' + modelMap['channel_name'] + '[/B]...')
+    #window.getControl(500).setVisible(True)
+    #window.getControl(501).setLabel('LOADING CONTENT FOR [B]' + modelMap['channel_name'] + '[/B]...')
+    system.show_busy_dialog()
         
 def show_tv_channel_episodes_view(modelMap, window):
     window.getControl(200).setVisible(False)
@@ -144,9 +148,11 @@ def show_tv_channel_episodes_view(modelMap, window):
     CacheManager().put('channel_image', modelMap['channel_image'])
     controls = CacheManager().get('controls_to_be_deleted')
     controls.append(image)
+    system.hide_busy_dialog()
     if modelMap.has_key('error-occurred') and modelMap['error-occurred']:
         logging.getLogger().debug('found an error message...')
         window.getControl(500).setVisible(False)
+        system.hide_busy_dialog()
         window.getControl(600).setVisible(True)
         logging.getLogger().exception(modelMap['error'])
     else:
@@ -155,6 +161,7 @@ def show_tv_channel_episodes_view(modelMap, window):
         window.getControl(1002).addItems(modelMap['tv_show_episode_items'])
         window.getControl(1000).setVisible(True)
         window.getControl(500).setVisible(False)
+        system.hide_busy_dialog()
         window.getControl(600).setVisible(False)
         window.setFocusId(1002)
     
@@ -167,6 +174,7 @@ def show_tv_show_episode_videos_list_view(modelMap, window):
     window.getControl(300).setVisible(False)
     window.getControl(400).setVisible(False)
     window.getControl(500).setVisible(False)
+    system.hide_busy_dialog()
     window.getControl(600).setVisible(False)
     
     window.getControl(804).reset()
@@ -185,6 +193,7 @@ def show_tv_channel_episode_videos_list_view(modelMap, window):
     controls = CacheManager().get('controls_to_be_deleted')
     controls.append(image)
     window.getControl(500).setVisible(False)
+    system.hide_busy_dialog()
     window.getControl(600).setVisible(False)
     window.getControl(1000).setVisible(False)
     
@@ -207,12 +216,14 @@ def show_tv_show_options(modelMap, window):
     if modelMap.has_key('error-occurred') and modelMap['error-occurred']:
         logging.getLogger().debug('found an error message...')
         window.getControl(500).setVisible(False)
+        system.hide_busy_dialog()
         window.getControl(600).setVisible(True)
         window.getControl(305).setEnabled(True)
         logging.getLogger().exception(modelMap['error'])
     else:
         window.getControl(502).setPercent(100)
         window.getControl(500).setVisible(False)
+        system.hide_busy_dialog()
         window.getControl(502).setPercent(0)
         logging.getLogger().debug(len(modelMap['tv-show-images']))
         window.getControl(901).reset()
@@ -266,6 +277,7 @@ def hide_tv_show_episodes_view(modelMap, window):
     window.getControl(401).reset()
     window.getControl(400).setVisible(False)
     window.getControl(500).setVisible(False)
+    system.hide_busy_dialog()
     window.getControl(600).setVisible(False)
     window.getControl(305).setEnabled(True)
     window.setFocusId(305)
@@ -281,6 +293,7 @@ def hide_tv_show_episode_videos_list_view(modelMap, window):
     window.getControl(300).setVisible(True)
     window.getControl(600).setVisible(False)
     window.getControl(500).setVisible(False)
+    system.hide_busy_dialog()
     window.setFocusId(305)
     
 def hide_tv_channel_episode_videos_list_view(modelMap, window):
@@ -292,6 +305,7 @@ def hide_tv_channel_episode_videos_list_view(modelMap, window):
     window.getControl(1000).setVisible(True)
     window.getControl(600).setVisible(False)
     window.getControl(500).setVisible(False)
+    system.hide_busy_dialog()
     window.setFocusId(1002)
     
     
@@ -303,6 +317,7 @@ def show_tv_show_episode_videos_view(modelMap, window):
     if modelMap.has_key('error-occurred') and modelMap['error-occurred']:
         logging.getLogger().debug('found an error message...')
         window.getControl(500).setVisible(False)
+        system.hide_busy_dialog()
         window.getControl(600).setVisible(True)
         logging.getLogger().exception(modelMap['error'])
     else:
@@ -317,6 +332,7 @@ def play_video_streams(modelMap, window):
     controls = CacheManager().get('controls_to_be_deleted')
     controls.append(image)
     window.getControl(500).setVisible(False)
+    system.hide_busy_dialog()
     logging.getLogger().debug('play video streams found')
     if modelMap.has_key('error-occurred') and modelMap['error-occurred']:
         logging.getLogger().debug('found an error message...')
@@ -368,8 +384,13 @@ def handle_favorite_tv_show_selected(window, control_id):
         req_attrib_map['channel-name'] = item.getProperty('channel-name')
         req_attrib_map['tv-show-name'] = item.getProperty('tv-show-name')
         req_attrib_map['tv-show-url'] = item.getProperty('tv-show-url')
-        window.getControl(500).setVisible(True)
-        window.getControl(501).setLabel('LOADING EPISODES FOR [B]' + req_attrib_map['tv-show-name'] + '[/B]...')
+        
+        notification = "XBMC.Notification(%s,%s,%s,%s)" % (req_attrib_map['tv-show-name'], 'LOADING EPISODES... ', 2500, 'icon.png')
+        xbmc.executebuiltin(notification)
+        system.show_busy_dialog()
+    
+#         window.getControl(500).setVisible(True)
+#         window.getControl(501).setLabel('LOADING EPISODES FOR [B]' + req_attrib_map['tv-show-name'] + '[/B]...')
     return req_attrib_map
 
 def handle_favorite_tv_show_selected_for_remove(window, control_id):
@@ -398,10 +419,15 @@ def handle_tv_show_selected_for_options(window, control_id):
         req_attrib_map['channel-name'] = item.getProperty('channel-name')
         req_attrib_map['tv-show-name'] = item.getProperty('tv-show-name')
         req_attrib_map['tv-show-url'] = item.getProperty('tv-show-url')
-        window.getControl(500).setVisible(True)
-        window.getControl(502).setPercent(0)
         window.getControl(305).setEnabled(False)
-        window.getControl(501).setLabel('LOADING IMAGES FOR [B]' + req_attrib_map['tv-show-name'] + '[/B]...')
+        
+#         window.getControl(500).setVisible(True)
+#         window.getControl(502).setPercent(0)
+#         window.getControl(501).setLabel('LOADING IMAGES FOR [B]' + req_attrib_map['tv-show-name'] + '[/B]...')
+        
+        notification = "XBMC.Notification(%s,%s,%s,%s)" % (req_attrib_map['tv-show-name'], 'LOADING IMAGES... ', 2500, 'icon.png')
+        xbmc.executebuiltin(notification)
+        system.show_busy_dialog()
         
     return req_attrib_map
 
@@ -435,9 +461,14 @@ def handle_tv_show_selected(window, control_id):
         req_attrib_map['channel-name'] = item.getProperty('channel-name')
         req_attrib_map['tv-show-name'] = item.getProperty('tv-show-name')
         req_attrib_map['tv-show-url'] = item.getProperty('tv-show-url')
-        window.getControl(500).setVisible(True)
         window.getControl(305).setEnabled(False)
-        window.getControl(501).setLabel('LOADING EPISODES FOR [B]' + req_attrib_map['tv-show-name'] + '[/B]...')
+        
+#         window.getControl(500).setVisible(True)
+#         window.getControl(501).setLabel('LOADING EPISODES FOR [B]' + req_attrib_map['tv-show-name'] + '[/B]...')
+        
+        notification = "XBMC.Notification(%s,%s,%s,%s)" % (req_attrib_map['tv-show-name'], 'LOADING EPISODES... ', 2500, 'icon.png')
+        xbmc.executebuiltin(notification)
+        system.show_busy_dialog()
         
     return req_attrib_map
 
@@ -458,8 +489,13 @@ def handle_tv_show_episode_selected(window, control_id):
         req_attrib_map['episode-name'] = item.getProperty('episode-name')
         req_attrib_map['episode-url'] = item.getProperty('episode-url')
         window.getControl(600).setVisible(False)
-        window.getControl(500).setVisible(True)
-        window.getControl(501).setLabel('LOADING VIDEOS FOR [B]' + req_attrib_map['episode-name'] + '[/B]...')
+#         window.getControl(500).setVisible(True)
+#         window.getControl(501).setLabel('LOADING VIDEOS FOR [B]' + req_attrib_map['episode-name'] + '[/B]...')
+
+        notification = "XBMC.Notification(%s,%s,%s,%s)" % (req_attrib_map['tv-show-name']+ ' - ' + req_attrib_map['episode-name'], 'LOADING VIDEOS... ', 2500, 'icon.png')
+        xbmc.executebuiltin(notification)
+        system.show_busy_dialog()
+        
         logging.getLogger().debug('Channel name in handle_tv_show_episode_selected = %s' % req_attrib_map['channel-name'])
     return req_attrib_map
 
@@ -481,8 +517,14 @@ def handle_tv_show_episode_video_selected(window, control_id):
             req_attrib_map['video-link'] = item.getProperty('videoLink')
             req_attrib_map['video-title'] = item.getProperty('videoTitle')
         window.getControl(600).setVisible(False)
-        window.getControl(500).setVisible(True)
-        window.getControl(501).setLabel('LOADING VIDEOS FROM [B]' + req_attrib_map['video-source-name'] + '[/B]...')
+        
+#         window.getControl(500).setVisible(True)
+#         window.getControl(501).setLabel('LOADING VIDEOS FROM [B]' + req_attrib_map['video-source-name'] + '[/B]...')
+
+        notification = "XBMC.Notification(%s,%s,%s,%s)" % (req_attrib_map['video-source-name'], 'LOADING VIDEOS... ', 2500, 'icon.png')
+        xbmc.executebuiltin(notification)
+        system.show_busy_dialog()
+        
         req_attrib_map['progress_control'] = window.getControl(502)
         
     return req_attrib_map
