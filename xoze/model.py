@@ -27,7 +27,7 @@ class MoveManager(object):
             *  passing appropriate input parameters to each move function.
             *  invoking controller callback function for changing the view."""
             
-    def __init__(self, dispatch_view_func, redirect_action_func, addon_path):
+    def __init__(self, dispatch_view_func, redirect_action_func, addon, addon_path):
         self._dispatch_view = dispatch_view_func
         self._redirect_action_func = redirect_action_func
         self._addon_path = addon_path

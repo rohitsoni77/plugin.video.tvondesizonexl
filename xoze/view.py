@@ -30,10 +30,17 @@ except:
 
 class ViewRenderer(object):
     
-    def __init__(self, do_action_func, addon_path):
+    def __init__(self, do_action_func, addon, addon_path):
         self._do_action_func = do_action_func
         self._addon_path = addon_path
-        self._addon_window = AddonWindow('AddonWindow.xml', addon_path)
+        self._theme = addon.getSetting('theme')
+        window_name = 'AddonWindow.xml'
+        if self._theme is None or self._theme == '' or self._theme == '0':
+            window_name = 'AddonWindow.xml'
+        else:
+            window_name = 'AddonWindow_' + self._theme + '.xml'
+        logging.getLogger().debug('Going to load window with name: %s' % window_name)
+        self._addon_window = AddonWindow(window_name, addon_path)
         self._addon_window.set_handle_event_func(self.handle_event)
         self._current_view = None
         CacheManager().put('controls_to_be_deleted', [])
@@ -107,7 +114,7 @@ class ViewRenderer(object):
 # define ACTION_MOUSE_WHEEL_UP         104
 # define ACTION_MOUSE_WHEEL_DOWN       105
 
-ACTION_INTENT_TEXT_MAPPING = {0: 'ACTION_NONE', 1:'ACTION_MOVE_LEFT', 2:'ACTION_MOVE_RIGHT', 3:'ACTION_MOVE_UP', 4:'ACTION_MOVE_DOWN', 5:'ACTION_PAGE_UP', 6:'ACTION_PAGE_DOWN', 7:'ACTION_SELECT_ITEM', 8:'ACTION_HIGHLIGHT_ITEM', 9:'ACTION_PARENT_DIR', 10:'ACTION_PREVIOUS_MENU', 11:'ACTION_SHOW_INFO',92:'ACTION_NAV_BACK', 100:'ACTION_MOUSE_LEFT_CLICK', 101:'ACTION_MOUSE_RIGHT_CLICK', 102:'ACTION_MOUSE_MIDDLE_CLICK', 103:'ACTION_MOUSE_DOUBLE_CLICK', 104:'ACTION_MOUSE_WHEEL_UP', 105:'ACTION_MOUSE_WHEEL_DOWN', 117:'ACTION_CONTEXT_MENU', 135:'ACTION_ENTER', 401:'ACTION_TOUCH_TAP', 410:'ACTION_TOUCH_TAP_TEN', 411:'ACTION_TOUCH_LONGPRESS', 420:'ACTION_TOUCH_LONGPRESS_TEN'}
+ACTION_INTENT_TEXT_MAPPING = {0: 'ACTION_NONE', 1:'ACTION_MOVE_LEFT', 2:'ACTION_MOVE_RIGHT', 3:'ACTION_MOVE_UP', 4:'ACTION_MOVE_DOWN', 5:'ACTION_PAGE_UP', 6:'ACTION_PAGE_DOWN', 7:'ACTION_SELECT_ITEM', 8:'ACTION_HIGHLIGHT_ITEM', 9:'ACTION_PARENT_DIR', 10:'ACTION_PREVIOUS_MENU', 11:'ACTION_SHOW_INFO', 92:'ACTION_NAV_BACK', 100:'ACTION_MOUSE_LEFT_CLICK', 101:'ACTION_MOUSE_RIGHT_CLICK', 102:'ACTION_MOUSE_MIDDLE_CLICK', 103:'ACTION_MOUSE_DOUBLE_CLICK', 104:'ACTION_MOUSE_WHEEL_UP', 105:'ACTION_MOUSE_WHEEL_DOWN', 117:'ACTION_CONTEXT_MENU', 135:'ACTION_ENTER', 401:'ACTION_TOUCH_TAP', 410:'ACTION_TOUCH_TAP_TEN', 411:'ACTION_TOUCH_LONGPRESS', 420:'ACTION_TOUCH_LONGPRESS_TEN'}
 
 class AddonWindow(xbmcgui.WindowXML):
     

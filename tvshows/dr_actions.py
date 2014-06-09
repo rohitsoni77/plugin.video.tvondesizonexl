@@ -774,7 +774,7 @@ def _retrieve_video_links_(req_attrib, modelMap):
 
 
 def __preparePlayListItem__(video_source_id, video_source_img, video_source_name, video_playlist_items, modelMap, isHD):
-    item = xbmcgui.ListItem(label='[COLOR blue][B]Continuous Play[/B][/COLOR]' + ' | ' + 'Source #' + str(video_source_id) + ' | ' + 'Parts = ' + str(len(video_playlist_items)) , iconImage=video_source_img, thumbnailImage=video_source_img)
+    item = xbmcgui.ListItem(label='[B]Continuous Play[/B]' + ' | ' + 'Source #' + str(video_source_id) + ' | ' + 'Parts = ' + str(len(video_playlist_items)) , iconImage=video_source_img, thumbnailImage=video_source_img)
     item.setProperty('videoSourceName', video_source_name)
     item.setProperty('isContinuousPlayItem', 'true')
     item.setProperty('isHD', isHD)

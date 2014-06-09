@@ -1,3 +1,6 @@
+[B]Version 2.2.8[/B]
+- Added new theme "Summer". Can be changed using Settings.
+
 [B]Version 2.2.7[/B]
 - UI changes to enhance the clarity.
 

@@ -24,9 +24,9 @@ import logging
 
 class ActionController(object):
     """Controls the execution of actions based on on action_id and also takes care of View dispatch based on view_id"""
-    def __init__(self, actions, views, addon_path):
-        self._move_manager = MoveManager(self.dispatch_view, self.redirect_action, addon_path)
-        self._view_renderer = ViewRenderer(self.do_action, addon_path)
+    def __init__(self, actions, views, addon, addon_path):
+        self._move_manager = MoveManager(self.dispatch_view, self.redirect_action, addon, addon_path)
+        self._view_renderer = ViewRenderer(self.do_action, addon, addon_path)
         self._actions = actions
         self._views = views
         logging.getLogger().debug('ActionController ready to control actions...')

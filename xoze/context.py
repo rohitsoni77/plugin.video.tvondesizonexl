@@ -109,7 +109,7 @@ class XozeContext(object):
 
     def _initialize_mvc(self):
         """creates controller part MVC which is responsible to initialize and control both Model and View. this should be STEP 2 for starting application."""
-        self._action_controller = ActionController(self._xoze.actions, self._xoze.views, self._addon_path);
+        self._action_controller = ActionController(self._xoze.actions, self._xoze.views, self._addon, self._addon_path);
         
     
     def get_action_controller(self):
