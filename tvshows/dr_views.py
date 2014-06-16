@@ -71,8 +71,10 @@ def show_channels_view(modelMap, window):
         window.getControl(105).setVisible(True)
         window.getControl(105).addItems(modelMap['favorite_tv_shows_items'])
         window.getControl(104).setVisible(False)
+        window.getControl(1042).setVisible(False)
     else:
         window.getControl(104).setVisible(True)
+        window.getControl(1042).setVisible(True)
         window.getControl(105).setVisible(False)
     
     window.getControl(100).setVisible(True)
@@ -252,8 +254,10 @@ def hide_remove_favorite(modelMap, window):
             window.getControl(105).setVisible(True)
             window.getControl(105).addItems(modelMap['favorite_tv_shows_items'])
             window.getControl(104).setVisible(False)
+            window.getControl(1042).setVisible(False)
         else:
             window.getControl(104).setVisible(True)
+            window.getControl(1042).setVisible(True)
             window.getControl(105).setVisible(False)
     window.setFocusId(102)
     
