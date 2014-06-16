@@ -18,10 +18,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from xoze.lib import importlib
+from xoze.lib import importlib, MyFont
+from xoze.utils import system
 from xoze.utils.cache import CacheManager
 import logging
-from xoze.utils import system
 try:
     import xbmcgui  # @UnresolvedImport
 except:
@@ -39,6 +39,8 @@ class ViewRenderer(object):
             window_name = 'AddonWindow.xml'
         else:
             window_name = 'AddonWindow_' + self._theme + '.xml'
+        logging.getLogger().debug('Going to load fonts.')
+        MyFont.FontModifier(addon_path).loadMyFontFile()
         logging.getLogger().debug('Going to load window with name: %s' % window_name)
         self._addon_window = AddonWindow(window_name, addon_path)
         self._addon_window.set_handle_event_func(self.handle_event)

@@ -37,7 +37,7 @@
 				<posy>20</posy>
 				<width>220</width>
 				<height>13</height>
-				<font>font13</font>
+				<font>Skia26</font>
 				<label>FAVORITES</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -48,14 +48,24 @@
 				<description>FAVORITES HELP</description>
 				<posx>20</posx>
 				<!-- <posy>305</posy> -->
-				<posy>50</posy>
+				<posy>100</posy>
 				<width>1200</width>
-				<height>180</height>
-				<font>font10</font>
-				<label>TO ADD NEW TV SHOW FAVORITE, NAVIGATE TO CHANNEL TV SHOWS AND
-					SELECT TV SHOW. LONG PRESS MENU BUTTON ON APPLE TV or RIGHT CLICK
-					ON HTPC.
-				</label>
+				<height>20</height>
+				<font>SkiaLight18</font>
+				<label>TO ADD NEW TV SHOW FAVORITE, NAVIGATE TO CHANNEL TV SHOWS AND SELECT TV SHOW.</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>0xFFF7F7F7</textcolor>
+			</control>
+			<control type="label" id="1042">
+				<description>FAVORITES HELP 2</description>
+				<posx>20</posx>
+				<!-- <posy>305</posy> -->
+				<posy>120</posy>
+				<width>1200</width>
+				<height>20</height>
+				<font>SkiaLight18</font>
+				<label>THEN LONG PRESS MENU BUTTON ON APPLE TV or RIGHT CLICK ON HTPC, AND SELECT IMAGE FOR FAVORITE.</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>0xFFF7F7F7</textcolor>
@@ -139,7 +149,7 @@
 						<posy>190</posy>
 						<width>400</width>
 						<height>12</height>
-						<font>font12</font>
+						<font>SkiaLight24</font>
 						<label>$INFO[ListItem.Label]</label>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -155,7 +165,7 @@
 				<width>200</width>
 				<height>40</height>
 				<label>REMOVE FAVORITE</label>
-				<font>font13</font>
+				<font>SkiaLight24</font>
 				<align>center</align>
 				<colordiffuse>FFFFFFFF</colordiffuse>
 				<texturefocus>button-focus-red.png</texturefocus>
@@ -172,7 +182,7 @@
 				<posy>260</posy>
 				<width>220</width>
 				<height>13</height>
-				<font>font13</font>
+				<font>Skia26</font>
 				<label>TV CHANNELS</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -231,7 +241,7 @@
 						<width>129</width>
 						<height>8</height>
 						<aspectratio aligny="top">stretch</aspectratio>
-						<texture background="true">channel-shadow.png</texture>
+						<texture background="true" border="0">channel-shadow.png</texture>
 					</control>
 					<control type="image" id="1023">
 						<posx>13</posx>
@@ -261,7 +271,7 @@
 				<width>160</width>
 				<height>3</height>
 				<aspectratio aligny="top">stretch</aspectratio>
-				<texture background="true">channel-shadow.png</texture>
+				<texture background="true"  border="0">channel-shadow.png</texture>
 			</control>
 			<control type="label" id="303">
 				<description>TV CHANNEL NAME</description>
@@ -269,8 +279,8 @@
 				<posy>30</posy>
 				<width>700</width>
 				<height>30</height>
-				<font>font30_title</font>
-				<label>TV CHANNELS</label>
+				<font>SkiaExtended40</font>
+				<label>TV CHANNEL NAME</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>0xFFFFFFFF</textcolor>
@@ -298,7 +308,7 @@
 						<posy>1</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font12</font>
+						<font>SkiaLight24</font>
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -319,7 +329,7 @@
 						<posy>1</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font16</font>
+						<font>SkiaLightExtended34</font>
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -364,7 +374,7 @@
 						<posy>1</posy>
 						<width>410</width>
 						<height>40</height>
-						<font>font12</font>
+						<font>SkiaLight24</font>
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -385,7 +395,7 @@
 						<posy>1</posy>
 						<width>410</width>
 						<height>40</height>
-						<font>font16</font>
+						<font>SkiaLightExtended34</font>
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -411,7 +421,7 @@
 				<posy>672</posy>
 				<width>1280</width>
 				<height>20</height>
-				<font>font15</font>
+				<font>SkiaLight18</font>
 				<label>LOADING...</label>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -443,10 +453,8 @@
 				<posy>680</posy>
 				<width>1280</width>
 				<height>20</height>
-				<font>font15</font>
-				<label>OOOPS!!! :( ERROR... PLEASE PRESS MENU BUTTON TO GO BACK AND
-					TRY AGAIN LATER.
-				</label>
+				<font>SkiaLight18</font>
+				<label>OOOPS!!! :( ERROR... PLEASE PRESS MENU BUTTON TO GO BACK AND TRY AGAIN LATER.</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>0xFFF7F7F7</textcolor>
@@ -500,7 +508,7 @@
 				<posy>400</posy>
 				<width>300</width>
 				<height>20</height>
-				<font>font13</font>
+				<font>Skia26</font>
 				<label>LOADING TV SHOWS...</label>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -540,7 +548,7 @@
 				<posy>30</posy>
 				<width>1000</width>
 				<height>100</height>
-				<font>font45caps_title</font>
+				<font>Skia26</font>
 				<label></label>
 				<align>center</align>
 				<aligny>top</aligny>
@@ -553,7 +561,7 @@
 				<posy>130</posy>
 				<width>1000</width>
 				<height>30</height>
-				<font>font30</font>
+				<font>Skia26</font>
 				<label></label>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -592,7 +600,7 @@
 				<width>300</width>
 				<height>40</height>
 				<label></label>
-				<font>font13</font>
+				<font>SkiaLight24</font>
 				<align>center</align>
 			</control>
 
@@ -608,7 +616,7 @@
 				<width>160</width>
 				<height>3</height>
 				<aspectratio aligny="top">stretch</aspectratio>
-				<texture background="true">channel-shadow.png</texture>
+				<texture background="true" border="0">channel-shadow.png</texture>
 			</control>
 
 			<control type="label" id="801">
@@ -617,7 +625,7 @@
 				<posy>30</posy>
 				<width>900</width>
 				<height>30</height>
-				<font>font30_title</font>
+				<font>SkiaExtended40</font>
 				<label>TV CHANNELS</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -630,7 +638,7 @@
 				<posy>65</posy>
 				<width>900</width>
 				<height>30</height>
-				<font>font30</font>
+				<font>Skia26</font>
 				<label>TV SHOW</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -643,7 +651,7 @@
 				<posy>95</posy>
 				<width>900</width>
 				<height>27</height>
-				<font>font14</font>
+				<font>SkiaLightExtended34</font>
 				<label>TV SHOW EPISODE</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -684,7 +692,7 @@
 						<posy>1</posy>
 						<width>740</width>
 						<height>40</height>
-						<font>font12</font>
+						<font>SkiaLight24</font>
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -713,7 +721,7 @@
 						<posy>1</posy>
 						<width>740</width>
 						<height>40</height>
-						<font>font16</font>
+						<font>SkiaLightExtended34</font>
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -731,7 +739,7 @@
 				<posy>48</posy>
 				<width>800</width>
 				<height>20</height>
-				<font>font12</font>
+				<font>SkiaLight18</font>
 				<label>CHOOSE AN IMAGE TO ADD TV SHOW TO FAVORITES.</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -805,7 +813,7 @@
 				<width>160</width>
 				<height>3</height>
 				<aspectratio aligny="top">stretch</aspectratio>
-				<texture background="true">channel-shadow.png</texture>
+				<texture background="true" border="0">channel-shadow.png</texture>
 			</control>
 			<control type="label" id="1001">
 				<description>TV CHANNEL NAME</description>
@@ -813,7 +821,7 @@
 				<posy>30</posy>
 				<width>700</width>
 				<height>30</height>
-				<font>font30_title</font>
+				<font>SkiaExtended40</font>
 				<label>TV CHANNELS</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -842,7 +850,7 @@
 						<posy>1</posy>
 						<width>840</width>
 						<height>40</height>
-						<font>font12</font>
+						<font>SkiaLight24</font>
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -863,7 +871,7 @@
 						<posy>1</posy>
 						<width>840</width>
 						<height>40</height>
-						<font>font16</font>
+						<font>SkiaLightExtended34</font>
 						<label>$INFO[ListItem.Label]</label>
 						<align>left</align>
 						<aligny>center</aligny>

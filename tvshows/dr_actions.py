@@ -367,7 +367,7 @@ def _prepare_tv_show_items_(tv_shows, channel_type, channel_name, selected_tv_sh
     for tv_show in tv_shows:
         name = tv_show['name']
         if is_finished_shows:
-            name = name + ' [COLOR blue]finished[/COLOR]'
+            name = name + ' [COLOR gray]finished[/COLOR]'
         item = xbmcgui.ListItem(label=name)
         item.setProperty('channel-type', channel_type)
         item.setProperty('channel-name', channel_name)
@@ -535,6 +535,9 @@ def __retrieveTVShowEpisodes__(threads, tv_show_name, channel_type, channel_name
         titleInfo = titleInfo.replace('Video', '')
         titleInfo = titleInfo.replace('video', '')
         titleInfo = titleInfo.replace('-', '')
+        titleInfo = titleInfo.replace('/ Download', '')
+        titleInfo = titleInfo.replace('/Download', '')
+        titleInfo = titleInfo.replace('Download', '')
         titleInfo = titleInfo.strip()
 #         movieInfo = re.compile("(.+?)\((\d+)\)").findall(titleInfo)
 #         if(len(movieInfo) >= 1 and len(movieInfo[0]) >= 2):

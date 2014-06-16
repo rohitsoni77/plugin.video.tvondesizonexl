@@ -1,3 +1,9 @@
+[B]Version 2.3.0[/B]
+- Added new font independent of XBMC skin font.
+
+[B]Version 2.2.9[/B]
+- Stripped "Download" word.
+
 [B]Version 2.2.8[/B]
 - Added new theme "Summer". Can be changed using Settings.
 

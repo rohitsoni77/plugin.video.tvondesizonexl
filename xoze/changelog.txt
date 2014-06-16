@@ -1,3 +1,6 @@
+[B]Version 1.1.0[/B]
+- Added MyFont to enable support for dynamic font for add-on irrespective of enabled skin.
+
 [B]Version 1.0.2[/B]
 - Added new Snapper for Movzap & modified YouTube Snapper.
 
