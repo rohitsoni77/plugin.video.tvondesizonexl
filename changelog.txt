@@ -1,3 +1,6 @@
+[B]Version 2.3.3[/B]
+- Rebuilt package.
+
 [B]Version 2.3.2[/B]
 - Fixed Blackie skin for add-on.
 

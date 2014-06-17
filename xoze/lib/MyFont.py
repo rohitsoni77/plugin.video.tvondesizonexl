@@ -25,18 +25,21 @@ class FontModifier:
     
     
     def loadMyFontFile(self):
-        myfont_xml = os.path.join(self.script_font_path, "MyFont.xml")
-        if os.path.exists(myfont_xml):
-            root = ET.parse(open(myfont_xml, "r")).getroot()
-            for myfont in root.getchildren():
-                style = ""
-                if myfont.attrib.has_key('style'):
-                    style = myfont.attrib['style']
-                aspect = ""
-                if myfont.attrib.has_key('aspect'):
-                    aspect = myfont.attrib['aspect']
-                
-                self.addFont(myfont.attrib['name'], myfont.attrib['filename'], myfont.attrib['size'], style, aspect)
+        try:
+            myfont_xml = os.path.join(self.script_font_path, "MyFont.xml")
+            if os.path.exists(myfont_xml):
+                root = ET.parse(open(myfont_xml, "r")).getroot()
+                for myfont in root.getchildren():
+                    style = ""
+                    if myfont.attrib.has_key('style'):
+                        style = myfont.attrib['style']
+                    aspect = ""
+                    if myfont.attrib.has_key('aspect'):
+                        aspect = myfont.attrib['aspect']
+                    
+                    self.addFont(myfont.attrib['name'], myfont.attrib['filename'], myfont.attrib['size'], style, aspect)
+        except:
+            print_exc()
         
     
     def getFontsXML(self):
