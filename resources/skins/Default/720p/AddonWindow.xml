@@ -40,11 +40,24 @@
 				<description>FAVORITES HELP</description>
 				<posx>20</posx>
 				<!-- <posy>305</posy> -->
-				<posy>50</posy>
+				<posy>100</posy>
 				<width>1200</width>
-				<height>180</height>
-				<font>font10</font>
-				<label>TO ADD NEW TV SHOW FAVORITE, NAVIGATE TO CHANNEL TV SHOWS AND SELECT TV SHOW. LONG PRESS MENU BUTTON ON APPLE TV or RIGHT CLICK ON HTPC.</label>
+				<height>20</height>
+				<font>font13</font>
+				<label>TO ADD NEW TV SHOW FAVORITE, NAVIGATE TO CHANNEL TV SHOWS AND SELECT TV SHOW.</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>0xFFF7F7F7</textcolor>
+			</control>
+			<control type="label" id="1042">
+				<description>FAVORITES HELP 2</description>
+				<posx>20</posx>
+				<!-- <posy>305</posy> -->
+				<posy>120</posy>
+				<width>1200</width>
+				<height>20</height>
+				<font>font13</font>
+				<label>THEN LONG PRESS MENU BUTTON ON APPLE TV or RIGHT CLICK ON HTPC, AND SELECT IMAGE FOR FAVORITE.</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>0xFFF7F7F7</textcolor>
