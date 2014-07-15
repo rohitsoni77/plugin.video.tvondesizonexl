@@ -1,3 +1,6 @@
+[B]Version 2.3.4[/B]
+- Fixed a major issue of parsing desirulez webpages.
+
 [B]Version 2.3.3[/B]
 - Rebuilt package.
 

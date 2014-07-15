@@ -892,7 +892,6 @@
 				<texture border="2">icon.png</texture>
 				<bordertexture border="2">0xFFFFFFFF</bordertexture>
       			<bordersize>2</bordersize>
-      
 			</control>
 			<control type="image">
 				<posx>544</posx>

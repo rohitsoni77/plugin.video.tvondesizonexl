@@ -31,7 +31,7 @@ import logging
 import pickle
 import re
 import time
-import xbmc, xbmcgui # @UnresolvedImport
+import xbmc, xbmcgui  # @UnresolvedImport
 
 DIRECT_CHANNELS = {"Awards & Concerts":{"iconimage":"Awards.jpg",
                    "channelType": "IND",
@@ -465,8 +465,9 @@ def load_tv_show_episodes(req_attrib, modelMap):
         if currentPage != 1:
             url = url + '/page' + req_attrib['tv-show-page']
     logging.getLogger().debug('load tv show episodes...' + url)
-    contentDiv = BeautifulSoup.SoupStrainer('div', {'id':'contentBody'})
-    soup = HttpClient().get_beautiful_soup(url=url, parseOnlyThese=contentDiv)
+#     contentDiv = BeautifulSoup.SoupStrainer('div', {'id':'contentBody'})
+#     soup = HttpClient().get_beautiful_soup(url=url, parseOnlyThese=contentDiv)
+    soup = BeautifulSoup.BeautifulSoup(HttpClient().get_html_content(url=url)).findAll('div', {'id':'contentBody'})[0]
     
     tv_show_episode_items = []
     if currentPage == 1:
@@ -654,12 +655,15 @@ def _write_favorite_tv_shows_cache_(filepath, data):
 
 
 def __retrieve_tv_shows__(tv_channel_url):
+    logging.getLogger().debug(tv_channel_url)
     tv_shows = []
     if tv_channel_url is None:
         return tv_shows
     tv_channel_url = BASE_WSITE_URL + tv_channel_url
-    contentDiv = BeautifulSoup.SoupStrainer('div', {'id':'forumbits', 'class':'forumbits'})
-    soup = HttpClient().get_beautiful_soup(url=tv_channel_url, parseOnlyThese=contentDiv)
+    logging.getLogger().debug(tv_channel_url)
+#     contentDiv = BeautifulSoup.SoupStrainer('div', {'id':'forumbits', 'class':'forumbits'})
+#     soup = HttpClient().get_beautiful_soup(url=tv_channel_url, parseOnlyThese=contentDiv)
+    soup = BeautifulSoup.BeautifulSoup(HttpClient().get_html_content(url=tv_channel_url)).findAll('div', {'id':'forumbits', 'class':'forumbits'})[0]
     for title_tag in soup.findAll('h2', {'class':'forumtitle'}):
         aTag = title_tag.find('a')
         tv_show_url = str(aTag['href'])
@@ -677,7 +681,7 @@ def __retrieve_channel_tv_shows__(tv_channel_name, tv_channel):
     try:
         running_tvshows = __retrieve_tv_shows__(tv_channel["running_tvshows_url"])
         if(len(running_tvshows) == 0):
-            running_tvshows.append({"name":"ENTER TO VIEW :: This is the only easy way to view!", "url":BASE_WSITE_URL + tv_channel["running_tvshows_url"]})
+            running_tvshows.append({"name":"ERROR: UNABLE TO LOAD. Share message on http://forum.xbmc.org/showthread.php?tid=115583", "url":BASE_WSITE_URL + tv_channel["running_tvshows_url"]})
     except Exception, e:
         logging.getLogger().exception(e)
         logging.getLogger().debug('Failed to load a channel <%s>. continue retrieval of next tv show' % tv_channel_name)
@@ -705,8 +709,10 @@ def _retrieve_video_links_(req_attrib, modelMap):
     
     list_items = []
     
-    content = BeautifulSoup.SoupStrainer('blockquote', {'class':re.compile(r'\bpostcontent\b')})
-    soup = HttpClient().get_beautiful_soup(url=req_attrib['episode-url'], parseOnlyThese=content)
+#     content = BeautifulSoup.SoupStrainer('blockquote', {'class':re.compile(r'\bpostcontent\b')})
+#     soup = HttpClient().get_beautiful_soup(url=req_attrib['episode-url'], parseOnlyThese=content)
+    soup = BeautifulSoup.BeautifulSoup(HttpClient().get_html_content(url=req_attrib['episode-url'])).findAll('blockquote', {'class':re.compile(r'\bpostcontent\b')})[0]
+    
     for e in soup.findAll('br'):
         e.extract()
     logging.getLogger().debug(soup)
