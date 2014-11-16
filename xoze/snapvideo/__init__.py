@@ -24,7 +24,6 @@ import re
 import sys
 import elementtree.ElementTree as ET
 from xoze.lib import importlib
-import xbmcgui  # @UnresolvedImport
 
 STREAM_QUAL_LOW = 'LOW'
 STREAM_QUAL_SD = 'STANDARD'

@@ -21,14 +21,15 @@ along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 from controller import ActionController
 from objects import Actions, Action, Move, Service, View, Event
 from webservice import ServicePublisher
-from xoze.snapvideo import Snapper, STREAM_QUAL_HD_1080, \
-    STREAM_QUAL_HD_720, STREAM_QUAL_SD, STREAM_QUAL_LOW
+from xoze.snapvideo import Snapper, STREAM_QUAL_HD_1080, STREAM_QUAL_HD_720, \
+    STREAM_QUAL_SD, STREAM_QUAL_LOW
 from xoze.utils import file, system
 from xoze.utils.cache import CacheManager
 from xoze.utils.http import HttpClient
 from xoze.utils.patterns import Singleton
 import elementtree.ElementTree as ET
 import logging
+import time
 import xbmcgui  # @UnresolvedImport
 
 NAMESPACE = "{https://code.google.com/p/apple-tv2-xbmc/xoze/}"
@@ -147,11 +148,20 @@ class AddonContext(Singleton):
         logging.getLogger().debug('web services to be initialized...')
         self._start_services()
         
+        
     def _start_services(self):
         """starts JSON RPC server if service layer needs to be enabled for current app. this should be STEP 3 for starting application."""
         if self.get_conf('webServiceEnabled'):
             self._service_publisher = ServicePublisher(self, self._xoze_context._xoze.services, self._xoze_context._action_controller, self.get_conf('webServicePath'), self.get_conf('webServicePort'), self._addon_path)
             self._service_publisher.publish_services()
+    
+        
+    def enterServiceAddonMode(self):
+        while not system.exit_signal:
+            time.sleep(1)
+        logging.getLogger().debug('exit signal received, going to stop JSON RPC Server instance for service path: %s' % (self._context_root))
+        self._service_publisher.unpublish_services()
+            
         
     def set_current_addon(self, addon_id, context_files):
         if(self._current_addon_id is None):
@@ -200,6 +210,7 @@ class AddonContext(Singleton):
             del self._current_addon
             del self._current_addon_id
         if self._service_publisher is not None:
+            self._service_publisher.unpublish_services()
             self._service_publisher.do_clean()
             del self._service_publisher
         del self._addon

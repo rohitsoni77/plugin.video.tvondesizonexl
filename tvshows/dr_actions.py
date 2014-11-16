@@ -21,7 +21,7 @@ along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 
 from xoze.context import AddonContext, SnapVideo
 from xoze.snapvideo import Dailymotion, Playwire, YouTube, Tune_pk, VideoWeed, \
-    Nowvideo, Novamov
+    Nowvideo, Novamov, CloudEC
 from xoze.utils import file, http, jsonfile
 from xoze.utils.cache import CacheManager
 from xoze.utils.http import HttpClient
@@ -31,7 +31,9 @@ import logging
 import pickle
 import re
 import time
-import xbmc, xbmcgui  # @UnresolvedImport
+import urllib
+import xbmc  # @UnresolvedImport
+import xbmcgui  # @UnresolvedImport
 
 DIRECT_CHANNELS = {"Awards & Concerts":{"iconimage":"Awards.jpg",
                    "channelType": "IND",
@@ -42,7 +44,19 @@ DIRECT_CHANNELS = {"Awards & Concerts":{"iconimage":"Awards.jpg",
 
 LIVE_CHANNELS = {"EROSNOW.com":{"iconimage":"bajao.png",
                  "channelType": "IND",
-                 "channelUrl": "http://livehls.erosnow.com/channel/1000001/manifest.m3u8"}}
+                 "channelUrl": "http://livehls.erosnow.com/channel/1000001/manifest.m3u8"},
+                 "9XM":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_music.png",
+                 "channelType": "IND",
+                 "channelUrl": "http://d2949g19l28x5t.cloudfront.net/9x/smil:9xmusic.smil/playlist.m3u8"},
+                 "9X Tashan":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_tashan.png",
+                 "channelType": "IND",
+                 "channelUrl": "http://d2949g19l28x5t.cloudfront.net/9x/smil:9xtashan.smil/playlist.m3u8"},
+                 "9X Jhakaas":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_jhakaas.png",
+                 "channelType": "IND",
+                 "channelUrl": "http://d2949g19l28x5t.cloudfront.net/9x/smil:9xjhakaas.smil/playlist.m3u8"},
+                 "9X Jalwa":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_jalwa.png",
+                 "channelType": "IND",
+                 "channelUrl": "http://d2949g19l28x5t.cloudfront.net/9x/smil:9xjalwa.smil/playlist.m3u8"}}
 
 BASE_WSITE_URL = base64.b64decode('aHR0cDovL3d3dy5kZXNpcnVsZXoubmV0')
     
@@ -607,16 +621,21 @@ def load_selected_playlist_streams(req_attrib, modelMap):
     
     
 def _retrieve_playlist_streams_(progress_bar, playlist_items):
-    current_index = 0
+    lazyLoadStream = AddonContext().get_addon().getSetting('drLazyLoadStream')
+    current_index = 1
     total_iteration = len(playlist_items)
     video_items = []
     for item in playlist_items:
         logging.getLogger().debug('About to retrieve video link %s' % item)
-        video_item = SnapVideo().resolveVideoStream(item['videoLink'])
+        video_item = None
+        if lazyLoadStream is None or lazyLoadStream == 'false':
+            video_item = SnapVideo().resolveVideoStream(item['videoLink'])
+        else:
+            video_item = _create_video_stream_item(item['videoLink'], str(current_index))
         video_items.append(video_item)
-        current_index = current_index + 1
         percent = (current_index * 100) / total_iteration
         progress_bar.setPercent(percent)
+        current_index = current_index + 1
     return video_items
 
 
@@ -629,9 +648,18 @@ def load_selected_video_playlist_streams(req_attrib, modelMap):
         video_items = _retrieve_playlist_streams_(progress_bar, playlist_items)
     else:
         video_items = []
-        video_items.append(SnapVideo().resolveVideoStream(req_attrib['video-link']))
+        video_item = SnapVideo().resolveVideoStream(req_attrib['video-link'])
+        video_items.append(video_item)
         progress_bar.setPercent(100)
     modelMap['video_streams'] = video_items
+    
+    
+def _create_video_stream_item(videoLink, inx=''):
+    videoHostingInfo = SnapVideo().findVideoHostingInfo(videoLink)
+    label = videoHostingInfo.get_name() + inx
+    item = xbmcgui.ListItem(label=label, iconImage=videoHostingInfo.get_icon(), thumbnailImage=videoHostingInfo.get_icon())
+    item.setProperty('streamLink', 'plugin://plugin.video.tvondesizonexl/?videoLink=' + urllib.quote_plus(videoLink))
+    return item
 
 
 def _read_tv_channels_cache_(filepath):
@@ -721,6 +749,7 @@ def _retrieve_video_links_(req_attrib, modelMap):
     prevChild = ''
     prevAFont = None
     isHD = 'false'
+    videoSource = ''
     for child in soup.findChildren():
         if (child.name == 'img' or child.name == 'b' or (child.name == 'font' and not child.findChild('a'))):
             if (child.name == 'b' and prevChild == 'a') or (child.name == 'font' and child == prevAFont):
@@ -729,8 +758,9 @@ def _retrieve_video_links_(req_attrib, modelMap):
                 if len(video_playlist_items) > 0:
                     list_items.append(__preparePlayListItem__(video_source_id, video_source_img, video_source_name, video_playlist_items, modelMap, isHD))
                 
-                logging.getLogger().debug(child.getText())
-                if(re.search('720p', child.getText(), re.I)):
+                logging.getLogger().debug(videoSource)
+                videoSource = child.getText()
+                if(re.search('720p', videoSource, re.I)):
                     isHD = 'true'
                 else:
                     isHD = 'false'
@@ -746,6 +776,7 @@ def _retrieve_video_links_(req_attrib, modelMap):
             video_link = {}
             video_link['videoTitle'] = 'Source #' + str(video_source_id) + ' | ' + 'Part #' + str(video_part_index) + ' | ' + child.getText()
             video_link['videoLink'] = str(child['href'])
+            video_link['videoSource'] = videoSource
             try:
                 try:
                     __prepareVideoLink__(video_link)
@@ -794,15 +825,19 @@ def __preparePlayListItem__(video_source_id, video_source_img, video_source_name
 
 
 def __prepareVideoLink__(video_link):
+    logging.getLogger().debug(video_link)
     video_url = video_link['videoLink']
+    video_source = video_link['videoSource']
     new_video_url = None
     if re.search('videos.desihome.info', video_url, flags=re.I):
         new_video_url = __parseDesiHomeUrl__(video_url)
     if new_video_url is None:
+        
         video_id = re.compile('(id|url|v|si)=(.+?)/').findall(video_url + '/')[0][1]
-        if re.search('dm(\d*).php', video_url, flags=re.I) or (re.search('(desiserials|tellyserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and not video_id.isdigit()):
+        
+        if re.search('dm(\d*).php', video_url, flags=re.I) or (re.search('(desiserials|tellyserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and not video_id.isdigit() and re.search('dailymotion', video_source, flags=re.I)):
             new_video_url = 'http://www.dailymotion.com/video/' + video_id + '_'
-        elif re.search('(flash.php|fp.php|wire.php)', video_url, flags=re.I) or (re.search('(desiserials|tellyserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and video_id.isdigit()):
+        elif re.search('(flash.php|fp.php|wire.php)', video_url, flags=re.I) or (re.search('(desiserials|tellyserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and video_id.isdigit() and re.search('flash', video_source, flags=re.I)):
             new_video_url = 'http://cdn.playwire.com/v2/12376/config/' + video_id + '.json'
         elif re.search('(youtube|u|yt)(\d*).php', video_url, flags=re.I):
             new_video_url = 'http://www.youtube.com/watch?v=' + video_id + '&'
@@ -810,6 +845,8 @@ def __prepareVideoLink__(video_link):
             new_video_url = video_url
         elif re.search('(put|pl).php', video_url, flags=re.I):
             new_video_url = 'http://www.putlocker.com/file/' + video_id
+        elif re.search('cloud.php', video_url, flags=re.I):
+            new_video_url = 'http://www.cloudy.ec/embed.php?id=' + video_id
         elif re.search('(weed.php|vw.php)', video_url, flags=re.I):
             new_video_url = 'http://www.videoweed.es/file/' + video_id
         elif re.search('(sockshare.com|sock.com)', video_url, flags=re.I):
@@ -828,7 +865,11 @@ def __prepareVideoLink__(video_link):
             new_video_url = 'novamov.com/video/' + video_id + '&'
         elif re.search('tune.php', video_url, flags=re.I):
             new_video_url = 'tune.pk/play/' + video_id + '&'
-        
+        elif re.search('vshare.php', video_url, flags=re.I):
+            new_video_url = 'http://vshare.io/d/' + video_id + '&'
+        elif re.search('vidto.php', video_url, flags=re.I):
+            new_video_url = 'http://vidto.me/' + video_id + '.html'
+    
     video_hosting_info = SnapVideo().findVideoHostingInfo(new_video_url)
     video_link['videoLink'] = new_video_url
     video_link['videoSourceImg'] = video_hosting_info.get_icon()
@@ -848,7 +889,7 @@ def __parseDesiHomeUrl__(video_url):
     return video_link
 
 
-PREFERRED_DIRECT_PLAY_ORDER = [Dailymotion.VIDEO_HOSTING_NAME, Tune_pk.VIDEO_HOSTING_NAME, YouTube.VIDEO_HOSTING_NAME, Nowvideo.VIDEO_HOST_NAME, VideoWeed.VIDEO_HOST_NAME, Novamov.VIDEO_HOST_NAME]
+PREFERRED_DIRECT_PLAY_ORDER = [Dailymotion.VIDEO_HOSTING_NAME, CloudEC.VIDEO_HOST_NAME, VideoWeed.VIDEO_HOST_NAME, Playwire.VIDEO_HOSTING_NAME, Tune_pk.VIDEO_HOSTING_NAME, YouTube.VIDEO_HOSTING_NAME, Nowvideo.VIDEO_HOST_NAME, Novamov.VIDEO_HOST_NAME]
 
 def __findPlayNowStream__(new_items):
 #     if AddonContext().get_addon().getSetting('autoplayback') == 'false':
@@ -873,9 +914,15 @@ def __findPlayNowStream__(new_items):
                     selectedIndex = preference
                 if item.getProperty('isHD') == 'true' and selectedIndex is not None:
                     hdSelected = True
+                    
+                if source_name == CloudEC.VIDEO_HOST_NAME and backupSource is None:
+                    logging.getLogger().debug("Added to backup plan: %s" % source_name)
+                    backupSource = item
+                    backupSourceName = source_name
+                    
             except ValueError:
                 logging.getLogger().debug("Exception for source : %s" % source_name)
-                if source_name == Playwire.VIDEO_HOSTING_NAME and (backupSource is None or backupSourceName != Playwire.VIDEO_HOSTING_NAME):
+                if source_name == CloudEC.VIDEO_HOST_NAME and (backupSource is None or backupSourceName != CloudEC.VIDEO_HOST_NAME):
                     logging.getLogger().debug("Added to backup plan: %s" % source_name)
                     backupSource = item
                     backupSourceName = source_name

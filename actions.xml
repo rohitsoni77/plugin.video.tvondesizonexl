@@ -2,8 +2,13 @@
 <actions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://code.google.com/p/apple-tv2-xbmc/xoze/ xoze.xsd"
 	xmlns="https://code.google.com/p/apple-tv2-xbmc/xoze/">
-
-
+	
+	<service path="resolveStream" action-id="resolveStream" module="tvshows.actions" function="set_stream_in_response"/>
+	
+	<action id="resolveStream">
+		<move  module="tvshows.actions" function="resolve_stream"/>
+	</action>
+	
 	<action id="start">
 		<move module="tvshows.actions" function="start_addon" view-id="startView" />
 	</action>

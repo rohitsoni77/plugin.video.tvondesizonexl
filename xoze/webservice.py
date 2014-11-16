@@ -55,7 +55,7 @@ class ServicePublisher(object):
         service_resp = None
         try:
             modelMap = self._action_controller.do_action(action_id, params)
-            service_resp = self._invoke_resp_builder(modelMap)
+            service_resp = self._invoke_resp_builder(service.module, service.function, modelMap)
             logging.getLogger().debug('service response: ')
             logging.getLogger().debug(service_resp)
         except Exception, e:
@@ -85,12 +85,9 @@ class ServicePublisher(object):
             logging.getLogger().debug('service registered = %s @ %s' % (service.path, self._context_root))
         self._server.start()
         
-        while not system.exit_signal:
-            time.sleep(1)
-        logging.getLogger().debug('exit signal received, going to stop JSON RPC Server instance for service path: %s' % (self._context_root))
         
+    def unpublish_services(self):
         self._server.stop()
-        self._addon_context.do_clean()
         
         
     def do_clean(self):

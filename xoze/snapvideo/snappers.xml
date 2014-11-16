@@ -112,6 +112,10 @@
 		<video-id regex="videoweed.com/file/(.+?)&amp;" />
 		<video-id regex="videoweed.com/video/(.+?)&amp;" />
 	</snapper>
+	
+	<snapper function="retrieveVideoInfo" enabled="true" module="xoze.snapvideo.CloudEC">
+		<video-id regex="cloudy.ec/embed.php\?id=(.+?)&amp;"/>
+	</snapper>
 
 	<snapper module="xoze.snapvideo.VidBux" function="retrieveVideoInfo"
 		enabled="true" desc="www.vidbux.com video hosting website">
@@ -229,6 +233,16 @@
 	<snapper module="xoze.snapvideo.Sockshare" function="retrieveVideoInfo"
 		enabled="true" desc="www.sockshare.com video hosting website">
 		<video-id regex="sockshare.com/file/(.+?)&amp;" />
+	</snapper>
+	
+	<snapper module="xoze.snapvideo.VShare" function="retrieveVideoInfo"
+		enabled="true" desc="vshare.io video hosting website">
+		<video-id regex="vshare.io/d/(.+?)&amp;" />
+	</snapper>
+	
+	<snapper module="xoze.snapvideo.Vidto" function="retrieveVideoInfo"
+		enabled="true" desc="vidto.me video hosting website">
+		<video-id regex="vidto.me/(.+?).html" />
 	</snapper>
 
 	<snapper function="retrieveVideoInfo" enabled="true"

@@ -18,7 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from xoze.context import AddonContext
+from xoze.context import AddonContext, SnapVideo
 import logging
 
 def start_addon(req_attrib, modelMap):
@@ -48,3 +48,14 @@ def determine_source(req_attrib, modelMap):
 def end_addon(req_attrib, modelMap):
     logging.getLogger().debug('BYE bye ***********************')
     logging.getLogger().debug(req_attrib)
+    
+def resolve_stream(req_attrib, modelMap):
+    logging.getLogger().debug('Resolve stream...')
+    logging.getLogger().debug(req_attrib)
+    modelMap['video_item'] = SnapVideo().resolveVideoStream(req_attrib['videoLink'])
+    
+def set_stream_in_response(modelMap):
+    video_item = modelMap['video_item']
+    response = {'status':'success'}
+    response['streamLink'] = video_item.getProperty('streamLink')
+    return response

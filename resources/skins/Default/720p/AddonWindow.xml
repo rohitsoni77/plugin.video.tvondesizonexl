@@ -872,7 +872,7 @@
 				<height>192</height>
 				<align>center</align>
 				<aspectratio aligny="top">keep</aspectratio>
-				<texture>icon.png</texture>
+				<texture>tvondesizone-icon.png</texture>
 			</control>
 			<control type="image">
 				<posx>544</posx>
@@ -880,7 +880,7 @@
 				<width>192</width>
 				<height>192</height>
 				<aspectratio aligny="top">keep</aspectratio>
-				<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">icon.png</texture>
+				<texture diffuse="diffuse_mirror2.png" flipy="true" background="true">tvondesizone-icon.png</texture>
 			</control>
 		</control>
 	</controls>

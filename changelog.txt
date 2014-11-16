@@ -1,3 +1,27 @@
+[B]Version 2.5.0[/B]
+- vshare video source added for Pogo channel. 
+
+[B]Version 2.4.6 - 2.4.9[/B]
+- Cloud video source added. 
+
+[B]Version 2.4.5[/B]
+- Favorites images search fixed. 
+
+[B]Version 2.4.4[/B]
+- Preferred video source list modified: Dailymotion is on top. 
+
+[B]Version 2.4.3[/B]
+- Preferred video source list modified: Playwire is on top. 
+
+[B]Version 2.4.2[/B]
+- Lazy-Loading is made optional and disabled by default. 
+
+[B]Version 2.4.1[/B]
+- Lazy-Loading of video steaming URL: resolving streaming URL when played. 
+
+[B]Version 2.4.0[/B]
+- Added 9X channels. Major release.
+
 [B]Version 2.3.4[/B]
 - Fixed a major issue of parsing desirulez webpages.
 

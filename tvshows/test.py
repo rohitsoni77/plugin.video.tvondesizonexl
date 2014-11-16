@@ -34,3 +34,22 @@ if __name__ == '__main__':
         except:
             pass
         
+
+
+from xoze.lib.jsonrpclib.history import History
+from xoze.lib.jsonrpclib.jsonrpc import Server
+import json
+
+try:
+    videoLink = 'http://www.youtube.com/watch?v=p2KcObzrzLg'
+    print videoLink
+    client = Server('http://localhost:%d/TVonDESIZONE' % 11421)
+    response = client.resolveStream(videoLink=videoLink)
+    history = History.instance()
+    print json.loads(history.request)
+    print json.loads(history.response)
+    print response['status']
+    print response['streamLink']
+except Exception, e:
+    print json.loads(history.request)
+    raise e
