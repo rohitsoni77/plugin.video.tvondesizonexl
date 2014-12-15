@@ -837,8 +837,10 @@ def __prepareVideoLink__(video_link):
         
         if re.search('dm(\d*).php', video_url, flags=re.I) or (re.search('(desiserials|tellyserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and not video_id.isdigit() and re.search('dailymotion', video_source, flags=re.I)):
             new_video_url = 'http://www.dailymotion.com/video/' + video_id + '_'
-        elif re.search('(flash.php|fp.php|wire.php)', video_url, flags=re.I) or (re.search('(desiserials|tellyserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and video_id.isdigit() and re.search('flash', video_source, flags=re.I)):
-            new_video_url = 'http://cdn.playwire.com/v2/12376/config/' + video_id + '.json'
+        elif re.search('(tellyserials).tv/', video_url, flags=re.I) and video_id.isdigit() and re.search('flash', video_source, flags=re.I):
+            new_video_url = 'http://config.playwire.com/24388/videos/v2/' + video_id + '/player.json'
+        elif re.search('(flash.php|fp.php|wire.php)', video_url, flags=re.I) or (re.search('(desiserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and video_id.isdigit() and re.search('flash', video_source, flags=re.I)):
+            new_video_url = 'http://config.playwire.com/12376/videos/v2/' + video_id + '/player.json'
         elif re.search('(youtube|u|yt)(\d*).php', video_url, flags=re.I):
             new_video_url = 'http://www.youtube.com/watch?v=' + video_id + '&'
         elif re.search('mega.co.nz', video_url, flags=re.I):

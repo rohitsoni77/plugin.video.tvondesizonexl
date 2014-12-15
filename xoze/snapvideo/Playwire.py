@@ -26,14 +26,20 @@ def retrieveVideoInfo(video_id):
     video.set_video_host(getVideoHost())
     video.set_id(video_id)
     try:
-        video_link = 'http://cdn.playwire.com/' + str(video_id) + '.json'
-        
+        video_link = 'http://config.playwire.com/' + str(video_id) + '.json'
         html = http.HttpClient().get_html_content(url=video_link)
         jsonObj = json.loads(html)
         logging.getLogger().debug(jsonObj)
         img_link = str(jsonObj['poster'])
         video_link = str(jsonObj['src'])
+        logging.debug('get video info: ' + video_link)
+        video_info = re.compile('config.playwire.com/(.+?)/videos/v2/(.+?)/manifest.f4m').findall(video_link)[0]
         
+        logging.getLogger().debug('video_serial_no ' + str(video_info))
+ 
+        video_link = 'http://cdn.phoenix.intergi.com/' + video_info[0] + '/videos/' + video_info[1] + '/video-sd.mp4?hosting_id=' + video_info[0]
+        logging.getLogger().debug('video_link ' + str(video_link))
+
         video.set_stopped(False)
         video.set_thumb_image(img_link)
         video.set_name("PLAYWIRE Video")

@@ -1,3 +1,6 @@
+[B]Version 2.5.1[/B]
+- Fixed playwire links, thanks to jchirag0221 for fix. 
+
 [B]Version 2.5.0[/B]
 - vshare video source added for Pogo channel. 
 
