@@ -42,10 +42,12 @@ DIRECT_CHANNELS = {"Awards & Concerts":{"iconimage":"Awards.jpg",
                    "channelType": "IND",
                    "tvshow_episodes_url": "/forums/20-Latest-Exclusive-Movie-HQ"}}
 
-LIVE_CHANNELS = {"EROSNOW.com":{"iconimage":"bajao.png",
-                 "channelType": "IND",
-                 "channelUrl": "http://livehls.erosnow.com/channel/1000001/manifest.m3u8"},
-                 "9XM":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_music.png",
+# Removed : Not working any longer
+# "EROSNOW.com":{"iconimage":"bajao.png",
+#                  "channelType": "IND",
+#                  "channelUrl": "http://livehls.erosnow.com/channel/1000001/manifest.m3u8"},
+                 
+LIVE_CHANNELS = {"9XM":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_music.png",
                  "channelType": "IND",
                  "channelUrl": "http://d2949g19l28x5t.cloudfront.net/9x/smil:9xmusic.smil/playlist.m3u8"},
                  "9X Tashan":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_tashan.png",
@@ -106,6 +108,11 @@ def refresh_cache(req_attrib, modelMap):
                    "channelType": "IND",
                    "running_tvshows_url": "/forumdisplay.php?f=63",
                    "finished_tvshows_url": "/forumdisplay.php?f=210"},
+                  "Sony Pal":
+                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/ss/sony_pal_in.png",
+                   "channelType": "IND",
+                   "running_tvshows_url": "/forumdisplay.php?f=2757",
+                   "finished_tvshows_url": None},
                   "Life OK":
                   {"iconimage":"http://www.lyngsat-logo.com/logo/tv/ll/life_ok_in.jpg",
                    "channelType": "IND",
@@ -831,16 +838,16 @@ def __prepareVideoLink__(video_link):
     new_video_url = None
     if re.search('videos.desihome.info', video_url, flags=re.I):
         new_video_url = __parseDesiHomeUrl__(video_url)
-    if new_video_url is None:
+    if new_video_url is None:        
         
-        video_id = re.compile('(id|url|v|si)=(.+?)/').findall(video_url + '/')[0][1]
+        video_id = re.compile('(id|url|v|si)=(.+?)/').findall(video_url + '/')[0][1]                
         
         if re.search('dm(\d*).php', video_url, flags=re.I) or (re.search('(desiserials|tellyserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and not video_id.isdigit() and re.search('dailymotion', video_source, flags=re.I)):
             new_video_url = 'http://www.dailymotion.com/video/' + video_id + '_'
-        elif re.search('(tellyserials).tv/', video_url, flags=re.I) and video_id.isdigit() and re.search('flash', video_source, flags=re.I):
-            new_video_url = 'http://config.playwire.com/24388/videos/v2/' + video_id + '/player.json'
-        elif re.search('(flash.php|fp.php|wire.php)', video_url, flags=re.I) or (re.search('(desiserials|serialreview|[a-z]*).tv/', video_url, flags=re.I) and video_id.isdigit() and re.search('flash', video_source, flags=re.I)):
-            new_video_url = 'http://config.playwire.com/12376/videos/v2/' + video_id + '/player.json'
+        elif re.search('(pw.php)', video_url, flags=re.I):
+            new_video_url = 'http://config.playwire.com/videos/v2/' + video_id + '/player.json'
+        elif re.search('(flash.php|fp.php|wire.php)', video_url, flags=re.I) or (re.search('(desiserials|serialreview|tellyserials|[a-z]*).tv/', video_url, flags=re.I) and video_id.isdigit() and re.search('flash', video_source, flags=re.I)):
+            new_video_url = 'http://config.playwire.com/videos/v2/' + video_id + '/player.json'
         elif re.search('(youtube|u|yt)(\d*).php', video_url, flags=re.I):
             new_video_url = 'http://www.youtube.com/watch?v=' + video_id + '&'
         elif re.search('mega.co.nz', video_url, flags=re.I):
@@ -891,7 +898,7 @@ def __parseDesiHomeUrl__(video_url):
     return video_link
 
 
-PREFERRED_DIRECT_PLAY_ORDER = [Dailymotion.VIDEO_HOSTING_NAME, CloudEC.VIDEO_HOST_NAME, VideoWeed.VIDEO_HOST_NAME, Playwire.VIDEO_HOSTING_NAME, Tune_pk.VIDEO_HOSTING_NAME, YouTube.VIDEO_HOSTING_NAME, Nowvideo.VIDEO_HOST_NAME, Novamov.VIDEO_HOST_NAME]
+PREFERRED_DIRECT_PLAY_ORDER = [Dailymotion.VIDEO_HOSTING_NAME, Playwire.VIDEO_HOSTING_NAME, CloudEC.VIDEO_HOST_NAME, VideoWeed.VIDEO_HOST_NAME, Tune_pk.VIDEO_HOSTING_NAME, YouTube.VIDEO_HOSTING_NAME, Nowvideo.VIDEO_HOST_NAME, Novamov.VIDEO_HOST_NAME]
 
 def __findPlayNowStream__(new_items):
 #     if AddonContext().get_addon().getSetting('autoplayback') == 'false':

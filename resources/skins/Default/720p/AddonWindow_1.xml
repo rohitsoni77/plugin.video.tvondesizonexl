@@ -145,7 +145,7 @@
 					</control>
 					<control type="label" id="101">
 						<description>show name</description>
-						<posx>105</posx>
+						<posx>-100</posx>
 						<posy>190</posy>
 						<width>400</width>
 						<height>12</height>
